@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
       <div className="text-8xl tracking-tighter font-extrabold text-black mb-20">Hello Eugene</div>
-      <div className="w-[80vw] p-4 flex justify-between items-center">
+      <div className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
           <input type="text" className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
           <input type="text" className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Location"/>
@@ -17,7 +17,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 grid-flow-row gap-4">
+      <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         <LeadCard/>
         <LeadCard/>
       </div>
