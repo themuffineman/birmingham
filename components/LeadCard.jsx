@@ -10,10 +10,7 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+    DialogTrigger
   } from "@/components/ui/dialog"
   
   
@@ -41,8 +38,8 @@ const LeadCard = () => {
                 <iframe src='https://www.midjourney.com/showcase' className='h-[80vh] w-full'/>
             </DialogContent>
         </Dialog>
-        <a className="bg-neutral-300 rounded-md p-2 text-base font-semibold" href='https://www.midjourney.com/showcase' target='_blank'>Open Website</a>
-        <div className="bg-neutral-300 rounded-md p-2 text-base font-semibold" >Source: Yelp</div>
+        <a className="bg-neutral-200 rounded-md p-2 text-base font-semibold" href='https://www.midjourney.com/showcase' target='_blank'>Open Website</a>
+        <div className="bg-neutral-200 rounded-md p-2 text-base font-semibold" >Source: Yelp</div>
         <div className='flex gap-3 items-center '>
             <button className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-300 text-base font-semibold">Send Email</button>
             <button className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
