@@ -17,6 +17,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div>
+        <LeadCard/>
+      </div>
     </main>
   );
 }
