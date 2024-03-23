@@ -1,4 +1,4 @@
-import Image from "next/image";
+import LeadCard from "@/components/LeadCard";
 
 export default function Home() {
   return (
@@ -17,7 +17,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div>
+      <div className="grid grid-cols-1 grid-flow-row gap-4">
+        <LeadCard/>
         <LeadCard/>
       </div>
     </main>
