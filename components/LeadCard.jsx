@@ -15,10 +15,10 @@ import {
   
   
 
-const LeadCard = ({platform = 'google'}) => {
+const LeadCard = ({platform = 'google', emails, name, url}) => {
   return (
     <div className='flex justify-between items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
-        <div className='text-black font-bold text-lg truncate max-w-40'>Hello World Inc</div>
+        <div className='text-black font-bold text-lg truncate max-w-40'>{name}</div>
         <DropdownMenu >
             <DropdownMenuTrigger asChild>
                 <button className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
@@ -29,10 +29,14 @@ const LeadCard = ({platform = 'google'}) => {
             <DropdownMenuContent className="w-max">
                 <DropdownMenuLabel>Emails</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="flex gap-4">
-                    <div className='text-black flex-1 w-full font-semibold text-base'>petrusheya@gmail.com</div>
-                    <button className="p-2 w-max flex-1 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
-                </DropdownMenuItem>
+                {
+                    emails.map((email)=>(
+                        <DropdownMenuItem className="flex gap-4">
+                            <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
+                            <button className="p-2 w-max flex-1 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
+                        </DropdownMenuItem>
+                    ))
+                }
             </DropdownMenuContent>
         </DropdownMenu>
         <Dialog className="w-screen relative">
@@ -41,10 +45,10 @@ const LeadCard = ({platform = 'google'}) => {
                 <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm280-80q-82 0-146.5-44.5T240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280Zm0-60q56 0 102-26.5t72-73.5q-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340Zm0-100Zm0 60q25 0 42.5-17.5T540-440q0-25-17.5-42.5T480-500q-25 0-42.5 17.5T420-440q0 25 17.5 42.5T480-380Z"/></svg>
             </DialogTrigger>
             <DialogContent className="w-[90vw]">
-                <iframe src='https://www.midjourney.com/showcase' className='h-[80vh] w-full'/>
+                <iframe src={url} className='h-[80vh] w-full'/>
             </DialogContent>
         </Dialog>
-        <a className=" flex gap-1 bg-neutral-200 rounded-md p-2 text-base font-semibold" href='https://www.midjourney.com/showcase' target='_blank'>
+        <a className=" flex gap-1 bg-neutral-200 rounded-md p-2 text-base font-semibold" href={url} target='_blank'>
             <span>Open URL</span>
             <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z"/></svg>
         </a>
