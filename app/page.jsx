@@ -4,17 +4,16 @@ import { useRef, useState } from "react";
 
 export default function Home() {
 
-  const socket = new WebSocket('ws://localhost:3000');
-
+  
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
   const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
-
+  
   async function fetchLeads(e){
     try {
-      e.preventDefault
+      e.preventDefault()
       setIsStatus(true)
       const socket = new WebSocket('ws://localhost:8080');
       socket.addEventListener('open', () => {
@@ -47,7 +46,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
       <div className="text-8xl tracking-tighter font-extrabold text-black mb-20">Hello Eugene: <span className="text-neutral-500">Day 2</span></div>
-      <form onSubmit={(e)=> fetchLeads(e)} className="w-[74rem] p-4 flex justify-between items-center">
+      <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
           <input ref={serviceRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
           <input ref={locationRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Location"/>
@@ -64,9 +63,8 @@ export default function Home() {
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
-        {leadsData.map((lead)=>(
-          <LeadCard />
-
+        {leadsData?.map((lead)=>(
+          <LeadCard name={lead.name} url={lead.url} emails={lead.emails} platform="google" />
         ))}
       </div>
     </main>

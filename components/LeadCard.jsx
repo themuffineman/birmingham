@@ -30,7 +30,7 @@ const LeadCard = ({platform = 'google', emails, name, url}) => {
                 <DropdownMenuLabel>Emails</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {
-                    emails.map((email)=>(
+                    emails?.map((email)=>(
                         <DropdownMenuItem className="flex gap-4">
                             <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
                             <button className="p-2 w-max flex-1 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
