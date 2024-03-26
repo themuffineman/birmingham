@@ -54,19 +54,25 @@ export default function Home() {
         </div>
         <div className="w-max flex justify-between items-center p-2">
           <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
-            {isStatus && (
-              <div className="w-max flex justify-between items-center p-2">
-                <div className="size-5 rounded-full border-2 border-black border-t-neutral-400 animate-spin"/>
-                <p className="p-2 text-black text-base font-normal">{statusUpdate}</p>
-              </div>
-            )}
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead)=>(
-          <LeadCard name={lead.name} url={lead.url} emails={lead.emails} platform="google" />
+          <LeadCard name={lead.name} url={lead.url} emails={lead.emails} platform="google"/>
         ))}
       </div>
+      {isStatus && (
+        <div className="w-max flex justify-between items-center p-3 fixed bottom-1 left-1/2 -translate-x-1/2 bg-black ">
+          <div className="size-5 rounded-full border-2 border-black border-t-neutral-400 animate-spin"/>
+          <p className="p-2 text-white text-base font-normal">{statusUpdate}</p>
+        </div>
+      )}
     </main>
   );
 }
+
+
+// https://www.google.com/localservices/prolist?g2lbs=AIQllVxKz861QWvdO5Yk-8jN09vXU1BbEBmkh2Hm2qFZiXXQ4hcyDxFz7cpcWpincZ-7PEnbuHBsIxferaGVGQgklsLT-u8Wjr7UEh4SXkyXz1reSiOAv3B8EPhD8UPRYAD2jEVvB8aM&hl=en-NA&gl=na&cs=1&ssta=1&q=architects+in+texas&oq=architects+in+texas&scp=Cg5nY2lkOmFyY2hpdGVjdBJMEhIJSTKCCzZwQIYRPN4IGI8c6xYaEgkLNjLkhLXqVBFCt95Dkrk7HCIKVGV4YXMsIFVTQSoUDV1uZg8VcypvwB3BkMEVJTvOQ8gwABoKYXJjaGl0ZWN0cyITYXJjaGl0ZWN0cyBpbiB0ZXhhcyoJQXJjaGl0ZWN0&slp=MgA6HENoTUk5dVNhdk1tUmhRTVZnNVZRQmgyd2JRWjNSAggCYACSAZ0CCgsvZy8xdGg2ZjZ4ZwoNL2cvMTFoY3c1ZDltZAoLL2cvMXRkaDQ4aDMKCy9nLzF3eWM0cm1kCgsvZy8xdGtzajVkdwoML2cvMTJxaDl3OGZkCg0vZy8xMWc2bmwwbGY1CgsvZy8xdHQxdDJubgoLL2cvMXRobDE4MHMKCy9nLzF0ZGNnc3Y0CgsvZy8xdGc3c2RmNwoNL2cvMTFjbXk0bjl2NAoLL2cvMXRkNGR6cTEKDS9nLzExYndxYmswd2YKCy9nLzF0ZnNuZDRfCg0vZy8xMWI3bHBtOGIxCgsvZy8xdHp6dng1bAoLL2cvMXRteTVnc2gKCy9nLzF0a2I1aGgwCg0vZy8xMWJ4OGNteHM4EgQSAggBEgQKAggBmgEGCgIXGRAA&src=2&serdesk=1&sa=X&ved=2ahUKEwje6ZS8yZGFAxVdRkEAHcLfDt8QjGp6BAgmEAE
+// https://www.google.com/localservices/prolist?g2lbs=AIQllVxKz861QWvdO5Yk-8jN09vXU1BbEBmkh2Hm2qFZiXXQ4hcyDxFz7cpcWpincZ-7PEnbuHBsIxferaGVGQgklsLT-u8Wjr7UEh4SXkyXz1reSiOAv3B8EPhD8UPRYAD2jEVvB8aM&hl=en-NA&gl=na&cs=1&ssta=1&q=architects%20in%20texas&oq=architects%20in%20texas&slp=MgA6HENoTUk5dVNhdk1tUmhRTVZnNVZRQmgyd2JRWjNSAggCYACSAZ0CCgsvZy8xdGg2ZjZ4ZwoNL2cvMTFoY3c1ZDltZAoLL2cvMXRkaDQ4aDMKCy9nLzF3eWM0cm1kCgsvZy8xdGtzajVkdwoML2cvMTJxaDl3OGZkCg0vZy8xMWc2bmwwbGY1CgsvZy8xdHQxdDJubgoLL2cvMXRobDE4MHMKCy9nLzF0ZGNnc3Y0CgsvZy8xdGc3c2RmNwoNL2cvMTFjbXk0bjl2NAoLL2cvMXRkNGR6cTEKDS9nLzExYndxYmswd2YKCy9nLzF0ZnNuZDRfCg0vZy8xMWI3bHBtOGIxCgsvZy8xdHp6dng1bAoLL2cvMXRteTVnc2gKCy9nLzF0a2I1aGgwCg0vZy8xMWJ4OGNteHM4EgQSAggBEgQKAggBmgEGCgIXGRAA&src=2&serdesk=1&sa=X&ved=2ahUKEwje6ZS8yZGFAxVdRkEAHcLfDt8QjGp6BAgmEAE&scp=Cg5nY2lkOmFyY2hpdGVjdBJMEhIJSTKCCzZwQIYRPN4IGI8c6xYaEgkLNjLkhLXqVBFCt95Dkrk7HCIKVGV4YXMsIFVTQSoUDV1uZg8VcypvwB3BkMEVJTvOQ8gwABoKYXJjaGl0ZWN0cyITYXJjaGl0ZWN0cyBpbiB0ZXhhcyoJQXJjaGl0ZWN0&lci=20
+// https://www.google.com/localservices/prolist?g2lbs=AIQllVxKz861QWvdO5Yk-8jN09vXU1BbEBmkh2Hm2qFZiXXQ4hcyDxFz7cpcWpincZ-7PEnbuHBsIxferaGVGQgklsLT-u8Wjr7UEh4SXkyXz1reSiOAv3B8EPhD8UPRYAD2jEVvB8aM&hl=en-NA&gl=na&cs=1&ssta=1&q=architects%20in%20texas&oq=architects%20in%20texas&slp=MgA6HENoTUk5dVNhdk1tUmhRTVZnNVZRQmgyd2JRWjNSAggCYACSAZ0CCgsvZy8xdGg2ZjZ4ZwoNL2cvMTFoY3c1ZDltZAoLL2cvMXRkaDQ4aDMKCy9nLzF3eWM0cm1kCgsvZy8xdGtzajVkdwoML2cvMTJxaDl3OGZkCg0vZy8xMWc2bmwwbGY1CgsvZy8xdHQxdDJubgoLL2cvMXRobDE4MHMKCy9nLzF0ZGNnc3Y0CgsvZy8xdGc3c2RmNwoNL2cvMTFjbXk0bjl2NAoLL2cvMXRkNGR6cTEKDS9nLzExYndxYmswd2YKCy9nLzF0ZnNuZDRfCg0vZy8xMWI3bHBtOGIxCgsvZy8xdHp6dng1bAoLL2cvMXRteTVnc2gKCy9nLzF0a2I1aGgwCg0vZy8xMWJ4OGNteHM4EgQSAggBEgQKAggBmgEGCgIXGRAA&src=2&serdesk=1&sa=X&ved=2ahUKEwje6ZS8yZGFAxVdRkEAHcLfDt8QjGp6BAgmEAE&scp=Cg5nY2lkOmFyY2hpdGVjdBJMEhIJSTKCCzZwQIYRPN4IGI8c6xYaEgkLNjLkhLXqVBFCt95Dkrk7HCIKVGV4YXMsIFVTQSoUDV1uZg8VcypvwB3BkMEVJTvOQ8gwABoKYXJjaGl0ZWN0cyITYXJjaGl0ZWN0cyBpbiB0ZXhhcyoJQXJjaGl0ZWN0&lci=40
+// https://www.google.com/localservices/prolist?g2lbs=AIQllVxKz861QWvdO5Yk-8jN09vXU1BbEBmkh2Hm2qFZiXXQ4hcyDxFz7cpcWpincZ-7PEnbuHBsIxferaGVGQgklsLT-u8Wjr7UEh4SXkyXz1reSiOAv3B8EPhD8UPRYAD2jEVvB8aM&hl=en-NA&gl=na&cs=1&ssta=1&q=architects%20in%20texas&oq=architects%20in%20texas&slp=MgA6HENoTUk5dVNhdk1tUmhRTVZnNVZRQmgyd2JRWjNSAggCYACSAZ0CCgsvZy8xdGg2ZjZ4ZwoNL2cvMTFoY3c1ZDltZAoLL2cvMXRkaDQ4aDMKCy9nLzF3eWM0cm1kCgsvZy8xdGtzajVkdwoML2cvMTJxaDl3OGZkCg0vZy8xMWc2bmwwbGY1CgsvZy8xdHQxdDJubgoLL2cvMXRobDE4MHMKCy9nLzF0ZGNnc3Y0CgsvZy8xdGc3c2RmNwoNL2cvMTFjbXk0bjl2NAoLL2cvMXRkNGR6cTEKDS9nLzExYndxYmswd2YKCy9nLzF0ZnNuZDRfCg0vZy8xMWI3bHBtOGIxCgsvZy8xdHp6dng1bAoLL2cvMXRteTVnc2gKCy9nLzF0a2I1aGgwCg0vZy8xMWJ4OGNteHM4EgQSAggBEgQKAggBmgEGCgIXGRAA&src=2&serdesk=1&sa=X&ved=2ahUKEwje6ZS8yZGFAxVdRkEAHcLfDt8QjGp6BAgmEAE&scp=Cg5nY2lkOmFyY2hpdGVjdBJMEhIJSTKCCzZwQIYRPN4IGI8c6xYaEgkLNjLkhLXqVBFCt95Dkrk7HCIKVGV4YXMsIFVTQSoUDV1uZg8VcypvwB3BkMEVJTvOQ8gwABoKYXJjaGl0ZWN0cyITYXJjaGl0ZWN0cyBpbiB0ZXhhcyoJQXJjaGl0ZWN0&lci=60
