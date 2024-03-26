@@ -1,0 +1,12 @@
+@keyframes rise_up{
+    from{
+        bottom: -5rem
+    }
+    to{
+        bottom: 1rem
+    }
+}
+
+.status{
+    animation: rise_up .5s ease
+}
