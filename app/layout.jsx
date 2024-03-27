@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import mongoose from "mongoose";
+import Lead from "@/utils/schemas";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,6 +12,16 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const connectDB = async ()=>{
+    await mongoose.connect(`mongodb+srv://petrusheya:${process.env.DATABASE_PASSWORD}@cluster0.jsot3qd.mongodb.net/pendora?retryWrites=true&w=majority&appName=Cluster0`)
+
+    const leadData = await Lead.create({
+        name: 'ACME Inc',
+        email: 'hello@world.com'
+    })
+    console.log(leadData)
+  }
+  connectDB()
   return (
     <html lang="en">
       <body className={inter.className}>

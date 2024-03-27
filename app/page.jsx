@@ -1,9 +1,26 @@
 "use client"
+// import mongoose from "mongoose";
+// import Lead from "@/utils/schemas";
 import LeadCard from "@/components/LeadCard";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from '../components/components.module.css'
 
 export default function Home() {
+
+  // useEffect(()=>{
+    
+  //   const connectDB = async ()=>{
+  //     await mongoose.connect(`mongodb+srv://petrusheya:${process.env.DATABASE_PASSWORD}@cluster0.jsot3qd.mongodb.net/pendora?retryWrites=true&w=majority&appName=Cluster0`)
+  
+  //     const lead = await Lead.create({
+  //         name: 'ACME Inc',
+  //         email: 'hello@world.com'
+  //     })
+  //     console.log(lead)
+  //   }
+  //   connectDB()
+
+  // },[])
 
   
   const serviceRef = useRef(null)
