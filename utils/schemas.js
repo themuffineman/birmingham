@@ -7,4 +7,6 @@ const LeadSchema = new Schema({
     email: [String]
 })
 
-export default const Lead = model("Lead", LeadSchema)
+const Lead = model("Lead", LeadSchema)
+
+export default Lead
