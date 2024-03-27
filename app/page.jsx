@@ -49,7 +49,7 @@ export default function Home() {
         <div className="w-max flex gap-4 items-center p-2">
           <input ref={serviceRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
           <input ref={locationRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Location"/>
-          <input type="number" min={10} max={100} required={false} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-28 rounded-md" placeholder="Results #" />
+          <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
         </div>
         <div className="w-max flex justify-between items-center p-2">
           <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
