@@ -1,12 +1,15 @@
 import mongoose from "mongoose";
 
-const {model, Schema} = mongoose;
+const {model, Schema, models} = mongoose;
 
 const LeadSchema = new Schema({
     name: String,
-    email: [String]
+    email: {
+        type: String,
+        unique: true
+    }
 })
 
-const Lead = model("Lead", LeadSchema)
+const Lead = models.Lead || model("Lead", LeadSchema)
 
 export default Lead
