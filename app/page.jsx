@@ -10,7 +10,7 @@ export default function Home() {
   
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
-  const [leadsData, setLeadsData] = useState([])
+  const [leadsData, setLeadsData] = useState([{name: 'Petrus', emails: ['hello@hello.com', 'mybrother@brother.com'], url: 'hello.com'}, {name: 'Petrus', emails: ['hell@hello.com', 'mybother@brother.com']}])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   
@@ -58,9 +58,9 @@ export default function Home() {
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
-        <LeadCard emails={['hello@world.com']} name={'Petrus'}/>
-        {leadsData?.map((lead)=>(
-          <LeadCard name={lead.name} url={lead.url} emails={lead.emails} platform="google"/>
+        {/* <LeadCard emails={['hello@world.com', 'oh yeah']} name={'Petrus'} index={0} setLeadsData={setLeadsData}/> */}
+        {leadsData?.map((lead, index)=>(
+          <LeadCard name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google"/>
         ))}
       </div>
       {isStatus && (

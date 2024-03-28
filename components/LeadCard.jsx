@@ -17,8 +17,10 @@ import { ScrollArea } from './ui/scroll-area'
   
   
 
-const LeadCard = ({platform = 'google', emails, name, url}) => {
+const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData}) => {
+
     const [loading, setLoading] = useState(false)
+
     async function createLead(name, email){
         try {
             setLoading(true)
@@ -36,6 +38,25 @@ const LeadCard = ({platform = 'google', emails, name, url}) => {
             setLoading(false)
         }
     }
+
+    function deleteLead(){
+        setLeadsData((prev)=> [...prev.slice(0, index), ...prev.slice(index + 1)])
+    }
+    function deleteEmail(emailIndex){
+        setLeadsData((prev) => [
+            ...prev.slice(0, index), // Keep all elements before the modified lead
+            {
+              ...prev[index], // Copy the lead object at the specified index
+              emails: [
+                ...prev[index].emails.slice(0, emailIndex), // Keep all emails before the email to remove
+                ...prev[index].emails.slice(emailIndex + 1) // Keep all emails after the email to remove
+              ]
+            },
+            ...prev.slice(index + 1) // Keep all elements after the modified lead
+        ]);
+          
+    }
+
   return (
     <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
@@ -51,10 +72,10 @@ const LeadCard = ({platform = 'google', emails, name, url}) => {
                 <DropdownMenuLabel>Emails</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {
-                    emails?.map((email)=>(
+                    emails?.map((email, index)=>(
                             <DropdownMenuItem key={email} className="flex gap-4">
                                 <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
-                                <button className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
+                                <button onClick={()=> deleteEmail(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
                             </DropdownMenuItem>
                     ))
                 }
@@ -84,7 +105,7 @@ const LeadCard = ({platform = 'google', emails, name, url}) => {
                 <span>Add</span>
                 {loading && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
             </button>
-            <button className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
+            <button onClick={()=> deleteLead()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
         </div>
     </div>
   )
