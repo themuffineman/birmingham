@@ -1,8 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import mongoose from "mongoose";
-import Lead from "@/utils/schemas";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-  connectDB()
+  
   return (
     <html lang="en">
       <body className={inter.className}>

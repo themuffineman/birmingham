@@ -7,21 +7,6 @@ import styles from '../components/components.module.css'
 
 export default function Home() {
 
-  // useEffect(()=>{
-    
-  //   const connectDB = async ()=>{
-  //     await mongoose.connect(`mongodb+srv://petrusheya:${process.env.DATABASE_PASSWORD}@cluster0.jsot3qd.mongodb.net/pendora?retryWrites=true&w=majority&appName=Cluster0`)
-  
-  //     const lead = await Lead.create({
-  //         name: 'ACME Inc',
-  //         email: 'hello@world.com'
-  //     })
-  //     console.log(lead)
-  //   }
-  //   connectDB()
-
-  // },[])
-
   
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
@@ -73,6 +58,7 @@ export default function Home() {
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
+        <LeadCard emails={['hello@world.com']} name={'Petrus'}/>
         {leadsData?.map((lead)=>(
           <LeadCard name={lead.name} url={lead.url} emails={lead.emails} platform="google"/>
         ))}
