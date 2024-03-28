@@ -1,17 +1,19 @@
 import connectDB from "@/utils/connectDB";
 import Lead from "@/utils/schemas";
 
-export default async function POST(req, res){
+export async function POST(req){
     try{
-        const {name, email} = req.body
+        const {name, email} = await req.json()
         await connectDB()
         console.log('Successfully Connected to Database')
         const newLead = await Lead.create({
             name: name,
             email: email
         })
-        Response.json({lead: newLead})
+        return Response.json({lead: newLead})
+    
     }catch(error){
         console.log(error)
+        return Response.json({error})
     }
 }
