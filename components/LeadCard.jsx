@@ -14,6 +14,7 @@ import {
     DialogTrigger
   } from "@/components/ui/dialog"
 import { ScrollArea } from './ui/scroll-area'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
   
 
@@ -60,28 +61,28 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
   return (
     <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
-        <DropdownMenu >
-            <DropdownMenuTrigger asChild>
+        <Popover >
+            <PopoverTrigger>
                 <button className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
                     Emails
                     <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/></svg>
                 </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-max h-max max-h-[15rem]">
+            </PopoverTrigger>
+            <PopoverContent className="w-max h-max max-h-[15rem]">
                 <ScrollArea className=" h-full w-full">
-                <DropdownMenuLabel>Emails</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {
-                    emails?.map((email, index)=>(
-                            <DropdownMenuItem key={email} className="flex gap-4">
-                                <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
-                                <button onClick={()=> deleteEmail(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
-                            </DropdownMenuItem>
-                    ))
-                }
+                    <label>Emails</label>
+                    <hr />
+                    {
+                        emails?.map((email, index)=>(
+                                <DropdownMenuItem key={email} className="flex gap-4">
+                                    <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
+                                    <button onClick={()=> deleteEmail(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
+                                </DropdownMenuItem>
+                        ))
+                    }
                 </ScrollArea>
-            </DropdownMenuContent>
-        </DropdownMenu>
+            </PopoverContent>
+        </Popover>
         <Dialog className="w-screen relative">
             <DialogTrigger className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
                 Preview
