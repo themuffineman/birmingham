@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './components.module.css'
 
+
 const Toast = ({error}) => {
   return (
     <div className={`w-max flex justify-between items-center p-3 fixed bottom-4 ${styles.status} left-1/2 -translate-x-1/2 bg-black rounded-md`}>
