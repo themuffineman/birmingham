@@ -22,6 +22,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
 
     const [loading, setLoading] = useState(false)
     const [propEmails, setPropEmails] = useState(emails? emails : [])
+    const [deletingEmail, setDeletingEmail] = useState(false)
 
     async function createLead(name, email){
         try {
@@ -45,10 +46,19 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
         setLeadsData((prev)=> [...prev.slice(0, index), ...prev.slice(index + 1)])
     }
     function deleteEmails(emailIndex){
-        setPropEmails((prev)=> {
-            let tempEmails = [...prev]
-            return tempEmails.slice(emailIndex, -((tempEmails.length - 1) - emailIndex))
+        setDeletingEmail(true)
+        const emailCancel = document.querySelector('#email-cancel')
+        const deletetingTimeout = setTimeout(()=>{
+            setPropEmails((prev)=> {
+                let tempEmails = [...prev]
+                return tempEmails.slice(emailIndex, -((tempEmails.length - 1) - emailIndex))
+            })
+        }, 3000)
+        emailCancel.addEventListener('click', ()=>{
+            clearInterval(deletetingTimeout)
         })
+        
+        setDeletingEmail(false)
           
     }
 
@@ -70,7 +80,15 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
                         propEmails?.map((email, index)=>(
                                 <DropdownMenuItem key={email} className="flex gap-4">
                                     <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
-                                    <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
+                                    <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">
+                                        Delete
+                                        {deletingEmail &&
+                                            <>
+                                                <span className='size-5 rounded-full border-2 border-t-white animate-spin bg-transparent'/>
+                                                <button className='p-2 w-max bg-green-00 text-black'>Cancel</button>
+                                            </>
+                                        }
+                                    </button>
                                 </DropdownMenuItem>
                         ))
                     }
