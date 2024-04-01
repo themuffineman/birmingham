@@ -21,6 +21,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData}) => {
 
     const [loading, setLoading] = useState(false)
+    const [propEmails, setPropEmails] = useState(emails? emails : [])
 
     async function createLead(name, email){
         try {
@@ -43,18 +44,11 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
     function deleteLead(){
         setLeadsData((prev)=> [...prev.slice(0, index), ...prev.slice(index + 1)])
     }
-    function deleteEmail(emailIndex){
-        setLeadsData((prev) => [
-            ...prev.slice(0, index), // Keep all elements before the modified lead
-            {
-              ...prev[index], // Copy the lead object at the specified index
-              emails: [
-                ...prev[index].emails.slice(0, emailIndex), // Keep all emails before the email to remove
-                ...prev[index].emails.slice(emailIndex + 1) // Keep all emails after the email to remove
-              ]
-            },
-            ...prev.slice(index + 1) // Keep all elements after the modified lead
-        ]);
+    function deleteEmails(emailIndex){
+        setPropEmails((prev)=> {
+            let tempEmails = [...prev]
+            return tempEmails.slice(emailIndex, -((tempEmails.length - 1) - emailIndex))
+        })
           
     }
 
@@ -73,10 +67,10 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
                     <label>Emails</label>
                     <hr />
                     {
-                        emails?.map((email, index)=>(
+                        propEmails?.map((email, index)=>(
                                 <DropdownMenuItem key={email} className="flex gap-4">
                                     <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
-                                    <button onClick={()=> deleteEmail(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
+                                    <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">Delete</button>
                                 </DropdownMenuItem>
                         ))
                     }
