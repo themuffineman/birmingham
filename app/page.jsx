@@ -60,7 +60,7 @@ export default function Home() {
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {/* <LeadCard emails={['hello@world.com', 'oh yeah']} name={'Petrus'} index={0} setLeadsData={setLeadsData}/> */}
         {leadsData?.map((lead, index)=>(
-          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google"/>
+          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot}/>
         ))}
       </div>
       {isStatus && (

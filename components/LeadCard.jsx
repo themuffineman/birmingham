@@ -1,12 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+    DropdownMenuItem
 } from "@/components/ui/dropdown-menu"
 import {
     Dialog,
@@ -18,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
   
 
-const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData}) => {
+const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, screenshot}) => {
 
     const [loading, setLoading] = useState(false)
     const [propEmails, setPropEmails] = useState(emails? emails : [])
@@ -58,7 +53,6 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
         leadCancel.addEventListener('click', ()=>{
             clearInterval(deletetingTimeout)
         })
-        
         setDeletingLead(false)
     }
     function deleteEmails(emailIndex){
@@ -79,7 +73,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
     }
 
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
+    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
         <Popover >
             <PopoverTrigger>
@@ -120,6 +114,15 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
             </DialogTrigger>
             <DialogContent className="w-[90vw]">
                 <iframe src={url} className='h-[80vh] w-full'/>
+            </DialogContent>
+        </Dialog>
+        <Dialog className="w-screen relative">
+            <DialogTrigger className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
+                Screenshot
+                <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm280-80q-82 0-146.5-44.5T240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280Zm0-60q56 0 102-26.5t72-73.5q-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340Zm0-100Zm0 60q25 0 42.5-17.5T540-440q0-25-17.5-42.5T480-500q-25 0-42.5 17.5T420-440q0 25 17.5 42.5T480-380Z"/></svg>
+            </DialogTrigger>
+            <DialogContent className="w-[20vw]">
+                <img src={screenshot} className='w-full'/>
             </DialogContent>
         </Dialog>
         <a className=" flex gap-1 bg-neutral-200 rounded-md p-2 text-base font-semibold" href={url} target='_blank'>
