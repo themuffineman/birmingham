@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -23,6 +23,13 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
     const [loading, setLoading] = useState(false)
     const [propEmails, setPropEmails] = useState(emails? emails : [])
     const [deletingEmail, setDeletingEmail] = useState(false)
+    const [deletingLead, setDeletingLead] = useState(false)
+
+    useEffect(()=>{
+        return ()=>(
+            document.querySelector('#email-cancel').removeEventListener('click')
+        )
+    })
 
     async function createLead(name, email){
         try {
@@ -43,7 +50,16 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
     }
 
     function deleteLead(){
+        setDeletingLead(true)
+        const leadCancel = document.querySelector('#lead-cancel')
+        const deletetingTimeout = setTimeout(()=>{
         setLeadsData((prev)=> [...prev.slice(0, index), ...prev.slice(index + 1)])
+        }, 3000)
+        leadCancel.addEventListener('click', ()=>{
+            clearInterval(deletetingTimeout)
+        })
+        
+        setDeletingLead(false)
     }
     function deleteEmails(emailIndex){
         setDeletingEmail(true)
@@ -120,7 +136,16 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
                 <span>Add</span>
                 {loading && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
             </button>
-            <button onClick={()=> deleteLead()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
+            <div>
+                <button onClick={()=> deleteLead()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
+                {deletingLead &&
+                    <div>
+                        <span className='size-5 rounded-full border-2 border-t-white animate-spin bg-transparent'/>
+                        <button id='lead-cancel' className='p-2 w-max bg-green-00 text-black'>Cancel</button>
+                    </div>
+                }
+
+            </div>
         </div>
     </div>
   )
