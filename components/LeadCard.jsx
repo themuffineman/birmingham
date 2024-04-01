@@ -80,15 +80,17 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData})
                         propEmails?.map((email, index)=>(
                                 <DropdownMenuItem key={email} className="flex gap-4">
                                     <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
-                                    <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">
-                                        Delete
+                                    <div className='flex gap-3 w-max'>
+                                        <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600">
+                                            Delete
+                                        </button>
                                         {deletingEmail &&
-                                            <>
+                                            <div>
                                                 <span className='size-5 rounded-full border-2 border-t-white animate-spin bg-transparent'/>
-                                                <button className='p-2 w-max bg-green-00 text-black'>Cancel</button>
-                                            </>
+                                                <button id='email-cancel' className='p-2 w-max bg-green-00 text-black'>Cancel</button>
+                                            </div>
                                         }
-                                    </button>
+                                    </div>
                                 </DropdownMenuItem>
                         ))
                     }
