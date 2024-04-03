@@ -36,16 +36,8 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         }
     }   
 
-    function deleteLead(){
-        setDeletingLead(true)
-        const leadCancel = document.querySelector('#lead-cancel')
-        const deletetingTimeout = setTimeout(()=>{
+    function deleteLead(){ 
         setLeadsData((prev)=> [...prev.slice(0, index), ...prev.slice(index + 1)])
-        }, 3000)
-        leadCancel.addEventListener('click', ()=>{
-            clearInterval(deletetingTimeout)
-        })
-        setDeletingLead(false)
     }
     function deleteEmails(emailIndex) {
         setPropEmails(prev => {
