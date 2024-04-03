@@ -2,7 +2,7 @@
 // import mongoose from "mongoose";
 // import Lead from "@/utils/schemas";
 import LeadCard from "@/components/LeadCard";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styles from '../components/components.module.css'
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
     try {
       e.preventDefault()
       setIsStatus(true)
-      const socket = new WebSocket('ws://localhost:8080');
+      const socket = new WebSocket('wss://localhost:3000');  //papa-johns.com
       socket.addEventListener('open', () => {
           setStatusUpdate('WebSocket connection established');
       });
@@ -35,7 +35,7 @@ export default function Home() {
         }
       });
 
-      await fetch(`http://localhost:8080/?service=${serviceRef.current.value}&location=${locationRef.current.value}`)
+      await fetch(`http://localhost:3000?service=${serviceRef.current.value}&location=${locationRef.current.value}`)  //papa-johns.com
     } catch (error) {
       console.error(error)
     }finally{
@@ -58,7 +58,7 @@ export default function Home() {
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
-        {/* <LeadCard emails={['hello@world.com', 'oh yeah']} name={'Petrus'} index={0} setLeadsData={setLeadsData}/> */}
+        <LeadCard key={1} name={'hello'} url={'google.com'} emails={['hello','hi', 'yes', 'no', 'world']}/>
         {leadsData?.map((lead, index)=>(
           <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot}/>
         ))}
