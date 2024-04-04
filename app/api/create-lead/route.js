@@ -13,7 +13,7 @@ export async function POST(req){
         return Response.json({lead: newLead})
     
     }catch(error){
-        console.log(error)
+        console.error(error)
         return Response.json({error})
     }
 }

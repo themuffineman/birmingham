@@ -1,6 +1,4 @@
 "use client"
-// import mongoose from "mongoose";
-// import Lead from "@/utils/schemas";
 import LeadCard from "@/components/LeadCard";
 import { useRef, useState } from "react";
 import styles from '../components/components.module.css'
@@ -48,13 +46,13 @@ export default function Home() {
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <div className="text-xl tracking-tighter font-extrabold text-black mb-20 flex flex-col items-center">
+      <div className="text-xl tracking-tighter font-extrabold text-black mb-10 flex flex-col items-center">
         <Image
         src={papajohns}
-        width={150}
-        height={150}
+        width={200}
+        height={200}
+        priority={true}
         />
-        {/* <p>May I take your order sir</p> */}
       </div>
       <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">

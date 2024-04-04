@@ -1,11 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { DropdownMenuItem, DropdownMenu} from "@/components/ui/dropdown-menu"
-import {
-    Dialog,
-    DialogContent,
-    DialogTrigger
-  } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from './ui/scroll-area'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
@@ -15,7 +11,6 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
 
     const [loading, setLoading] = useState(false)
     const [propEmails, setPropEmails] = useState(emails? emails : [])
-    const [deletingLead, setDeletingLead] = useState(false)
 
    
     async function createLead(name, email){
@@ -106,13 +101,6 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             </button>
             <div>
                 <button onClick={()=> deleteLead()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
-                {deletingLead &&
-                    <div>
-                        <span className='size-5 rounded-full border-2 border-t-white animate-spin bg-transparent'/>
-                        <button id='lead-cancel' className='p-2 w-max bg-green-00 text-black'>Cancel</button>
-                    </div>
-                }
-
             </div>
         </div>
     </div>
