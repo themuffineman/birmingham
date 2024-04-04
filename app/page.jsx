@@ -4,13 +4,15 @@
 import LeadCard from "@/components/LeadCard";
 import { useRef, useState } from "react";
 import styles from '../components/components.module.css'
+import Image from "next/image";
+import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
 
   
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
-  const [leadsData, setLeadsData] = useState([{name: 'hello', emails: ['hello','hi', 'yes', 'no', 'world']}, {name: 'yello', emails: ['hello','hi', 'yes', 'no', 'world']}])
+  const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   
@@ -18,7 +20,7 @@ export default function Home() {
     try {
       e.preventDefault()
       setIsStatus(true)
-      const socket = new WebSocket('wss://localhost:3000');  //papa-johns.com
+      const socket = new WebSocket('wss://localhost:8080');  //papa-johns.com
       socket.addEventListener('open', () => {
           setStatusUpdate('WebSocket connection established');
       });
@@ -35,7 +37,7 @@ export default function Home() {
         }
       });
 
-      await fetch(`http://localhost:3000?service=${serviceRef.current.value}&location=${locationRef.current.value}`)  //papa-johns.com
+      await fetch(`http://localhost:8080?service=${serviceRef.current.value}&location=${locationRef.current.value}`)  //papa-johns.com
     } catch (error) {
       console.error(error)
     }finally{
@@ -46,7 +48,14 @@ export default function Home() {
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <div className="text-8xl tracking-tighter font-extrabold text-black mb-20">Welcome to: <span className="text-neutral-500">Day 2</span></div>
+      <div className="text-xl tracking-tighter font-extrabold text-black mb-20 flex flex-col items-center">
+        <Image
+        src={papajohns}
+        width={150}
+        height={150}
+        />
+        {/* <p>May I take your order sir</p> */}
+      </div>
       <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
           <input ref={serviceRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
@@ -58,7 +67,6 @@ export default function Home() {
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
-        {/* <LeadCard key={1} name={'hello'} url={'google.com'} emails={['hello','hi', 'yes', 'no', 'world']}/> */}
         {leadsData?.map((lead, index)=>(
           <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot}/>
         ))}
