@@ -46,7 +46,7 @@ export default function Home() {
   }
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <div className="text-xl tracking-tighter font-extrabold text-black mb-10 flex flex-col items-center">
+      <div className="text-xl tracking-tighter font-extrabold text-black mb-4 flex flex-col items-center">
         <Image
         src={papajohns}
         width={200}
