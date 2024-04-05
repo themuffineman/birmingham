@@ -10,33 +10,43 @@ export default function Home() {
   
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
+  const pagesRef= useRef(null)
   const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
+  const [pagesToScrape, setPagesToScrape] = useState(0)
   
-  async function fetchLeads(e){
+  async function fetchLeads(event){
     try {
-      e.preventDefault()
+      event.preventDefault()
       setIsStatus(true)
       const socket = new WebSocket('wss://localhost:8080');  //papa-johns.com
       socket.addEventListener('open', () => {
           setStatusUpdate('WebSocket connection established');
+      });
+      socket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+        setStatusUpdate(`Failed to connect to WebSocket`);
       });
   
       socket.addEventListener('message', event => {
         const message = event.data;
         try {
             const data = JSON.parse(message);
-            setLeadsData((prev)=> [...prev,data])
-            console.log('Received scraped data:', data);
-        } catch (error) {
-            setStatusUpdate(message)
-            console.log('Received status update:', message);
+            if(data.pages){          // if we recieved a pages object then thats the number of pages to scrape, if not, then its a lead
+              setPagesToScrape(data.pages)
+            }else{                             
+              setLeadsData((prev)=> [...prev,data])
+              console.log('Received scraped data:', data);
+            }
+        }catch(error){
+          setStatusUpdate(message)  // if its not a json string then its a status update
+          console.log('Received status update:', message);
         }
       });
 
-      await fetch(`http://localhost:8080?service=${serviceRef.current.value}&location=${locationRef.current.value}`)  //papa-johns.com
-    } catch (error) {
+      await fetch(`http://localhost:8080?service=${serviceRef.current.value}&location=${locationRef.current.value}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
+    }catch (error) {
       console.error(error)
     }finally{
       setTimeout(()=>{
@@ -58,6 +68,8 @@ export default function Home() {
         <div className="w-max flex gap-4 items-center p-2">
           <input ref={serviceRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
           <input ref={locationRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Location"/>
+          <input ref={pagesRef} type="number" required={true} min={1} max={100} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-20 rounded-md" placeholder="Page#" />
+          <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Max Pages: {pagesToScrape}</div>
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
         </div>
         <div className="w-max flex justify-between items-center p-2">
