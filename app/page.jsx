@@ -6,8 +6,6 @@ import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
-
-  
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
   const pagesRef= useRef(null)
@@ -29,7 +27,6 @@ export default function Home() {
         console.error('WebSocket error:', error);
         setStatusUpdate(`Failed to connect to WebSocket`);
       });
-  
       socket.addEventListener('message', event => {
         const message = event.data;
         try {
@@ -55,6 +52,11 @@ export default function Home() {
       },3000)
     }
   }
+  async function sheetTest(){
+    const response = await fetch('/api/send-email', {method: 'POST'})
+    console.log(await response.json())
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
       <div className="text-xl tracking-tighter font-extrabold text-black mb-4 flex flex-col items-center">
@@ -74,10 +76,10 @@ export default function Home() {
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
         </div>
-        <div className="w-max flex justify-between items-center p-2">
-          <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
-        </div>
       </form>
+        <div className="w-max flex justify-between items-center p-2">
+          <button onClick={()=> sheetTest()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
+        </div>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
           <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot} setEmailsSent={setEmailsSent}/>
