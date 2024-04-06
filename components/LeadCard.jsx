@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
   
 
-const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, screenshot}) => {
+const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, screenshot, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
     const [propEmails, setPropEmails] = useState(emails? emails : [])
@@ -23,6 +23,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                 throw new Error(confirmation.error)
             }
             console.log('Success Posting to Databse:', confirmation)
+            setEmailsSent(prev => prev++)
 
         } catch (error) {
             console.error(error)

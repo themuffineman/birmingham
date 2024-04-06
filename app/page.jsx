@@ -15,6 +15,7 @@ export default function Home() {
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
+  const [emailsSent, setEmailsSent] = useState(0)
   
   async function fetchLeads(event){
     try {
@@ -71,6 +72,7 @@ export default function Home() {
           <input ref={pagesRef} type="number" required={true} min={1} max={100} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-20 rounded-md" placeholder="Page#" />
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Max Pages: {pagesToScrape}</div>
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
+          <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
         </div>
         <div className="w-max flex justify-between items-center p-2">
           <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
@@ -78,7 +80,7 @@ export default function Home() {
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
-          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot}/>
+          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot} setEmailsSent={setEmailsSent}/>
         ))}
       </div>
       {isStatus && (
