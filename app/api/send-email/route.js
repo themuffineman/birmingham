@@ -6,10 +6,10 @@ export async function POST(req){
     
     try{
         const {name, email} = await req.json()
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (typeof email !== 'string'){
             throw new Error('Expected String');
         }
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)){
             throw new Error('Invalid Email Format');
         }

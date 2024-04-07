@@ -76,10 +76,10 @@ export default function Home() {
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
         </div>
-      </form>
         <div className="w-max flex justify-between items-center p-2">
           <button onClick={()=> sendEmail()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
         </div>
+      </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
           <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" screenshot={lead.screenshot} setEmailsSent={setEmailsSent}/>
