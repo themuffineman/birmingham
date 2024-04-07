@@ -52,10 +52,10 @@ export default function Home() {
       },3000)
     }
   }
-  async function sheetTest(){
-    const response = await fetch('/api/send-email', {method: 'POST'})
-    console.log(await response.json())
-  }
+  // async function sendEmail(){
+  //   const response = await fetch('/api/send-email', {method: 'POST'})
+  //   console.log(await response.json())
+  // }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
@@ -78,7 +78,7 @@ export default function Home() {
         </div>
       </form>
         <div className="w-max flex justify-between items-center p-2">
-          <button onClick={()=> sheetTest()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
+          <button onClick={()=> sendEmail()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
         </div>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(

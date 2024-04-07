@@ -16,14 +16,15 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     async function createLead(name, email){
         try {
             setLoading(true)
-            const res = await fetch('/api/create-lead', {method: "POST" , body: JSON.stringify({name: name, email: email})})
+            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email})})
             const confirmation = await res.json()
             if (confirmation.error){
-                alert('Error Posting to Database')
+                alert('Error Sending Email')
                 throw new Error(confirmation.error)
             }
-            console.log('Success Posting to Databse:', confirmation)
+            console.log('Success Sending Email:', confirmation)
             setEmailsSent(prev => prev++)
+            deleteLead() 
 
         } catch (error) {
             console.error(error)
