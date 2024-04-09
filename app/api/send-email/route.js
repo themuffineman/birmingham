@@ -1,9 +1,10 @@
 import nodemailer from 'nodemailer'
 import { google } from 'googleapis'
+import connectDB from "@/utils/connectDB";
+import Lead from "@/utils/schemas";
 
 export async function POST(req){
 
-    
     try{
         const {name, email} = await req.json()
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -13,13 +14,14 @@ export async function POST(req){
         if (!emailPattern.test(email)){
             throw new Error('Invalid Email Format');
         }
+        
 
-        // await connectDB()
-        // console.log('Successfully Connected to Database')
-        // const newLead = await Lead.create({
-        //     name: name,
-        //     email: email
-        // })
+        await connectDB()
+        console.log('Successfully Connected to Database')
+        const newLead = await Lead.create({
+            name: name,
+            email: email
+        })
 
         const oAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI)
         oAuth2Client.setCredentials({refresh_token: process.env.REFRESH_TOKEN})
@@ -29,7 +31,7 @@ export async function POST(req){
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: 'petrusheya@gmail.com',
+                user: 'pendorastudios@gmail.com',
                 clientId: process.env.CLIENT_ID, 
                 clientSecret: process.env.CLIENT_SECRET, 
                 refreshToken: process.env.REFRESH_TOKEN,
@@ -38,7 +40,7 @@ export async function POST(req){
         })
 
         const mailOptions = {
-            from: 'Papa Johns <petrusheya@gmail.com>',
+            from: 'Pendora Studios <pendorastudios@gmail.com>',
             to: 'pendorastudios@gmail.com',
             subject: 'Testing 123',
             text: 'This is a test, this is a test',
