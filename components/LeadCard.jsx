@@ -1,13 +1,11 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import { DropdownMenuItem, DropdownMenu} from "@/components/ui/dropdown-menu"
+import React, { useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { ScrollArea } from './ui/scroll-area'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
   
 
-const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, screenshot, setEmailsSent}) => {
+const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
     const [propEmails, setPropEmails] = useState(emails? emails : [])
@@ -23,7 +21,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                 throw new Error(confirmation.error)
             }
             console.log('Success Sending Email:', confirmation)
-            setEmailsSent(prev => prev++)
+            setEmailsSent(prev => prev+1)
             deleteLead() 
 
         } catch (error) {
@@ -82,15 +80,6 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                 <iframe src={url} className='h-[80vh] w-full'/>
             </DialogContent>
         </Dialog>
-        <Dialog className="w-screen relative">
-            <DialogTrigger className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
-                Screenshot
-                <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm280-80q-82 0-146.5-44.5T240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280Zm0-60q56 0 102-26.5t72-73.5q-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340Zm0-100Zm0 60q25 0 42.5-17.5T540-440q0-25-17.5-42.5T480-500q-25 0-42.5 17.5T420-440q0 25 17.5 42.5T480-380Z"/></svg>
-            </DialogTrigger>
-            <DialogContent className="w-[20vw]">
-                <img src={screenshot} className='w-full'/>
-            </DialogContent>
-        </Dialog>
         <a className=" flex gap-1 bg-neutral-200 rounded-md p-2 text-base font-semibold" href={url} target='_blank'>
             <span>Open URL</span>
             <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z"/></svg>
@@ -102,7 +91,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         </div>
         <div className='flex gap-3 items-center '>
             <button onClick={()=> sendEmail(name, emails[0])} className="p-2 w-max flex gap-3 items-center rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-300 text-base font-semibold">
-                <span>Add</span>
+                <span>Send Email</span>
                 {loading && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
             </button>
             <div>
