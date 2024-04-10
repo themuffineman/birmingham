@@ -22,7 +22,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             }
             console.log('Success Sending Email:', confirmation)
             setEmailsSent(prev => prev+1)
-            deleteLead() 
+            deleteLead(index) 
 
         } catch (error) {
             console.error(error)
@@ -31,8 +31,10 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         }
     }   
 
-    function deleteLead(){ 
-        setLeadsData((prev)=> [...prev.slice(0, index), ...prev.slice(index + 1)])
+    function deleteLead(LeadIndex){ 
+        setLeadsData((prev)=> {
+            return prev.filter((_, index) => index !== LeadIndex);
+          });
     }
     function deleteEmails(emailIndex) {
         setPropEmails(prev => {
