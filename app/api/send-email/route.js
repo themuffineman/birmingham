@@ -7,7 +7,6 @@ export async function POST(req){
 
     try{
         const {name, email} = await req.json()
-        console.log('heres the reqs', name, email)
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (typeof email !== 'string'){
             throw new Error('Expected String');

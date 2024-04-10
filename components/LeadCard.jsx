@@ -41,34 +41,33 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     }
 
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
+    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
         <Popover >
             <PopoverTrigger>
-                <button className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
+                <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
                     Emails
                     <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/></svg>
-                </button>
+                </div>
             </PopoverTrigger>
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
-                    {
-                        propEmails?.map((email, index)=>(
-                                <div key={email} className="flex gap-4 w-full items-center">
-                                    <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
-                                    <div className='flex gap-3 w-max'>
-                                        {
-                                            propEmails?.length !== 1 && (
-                                                <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600">
-                                                    Use Email
-                                                </button>
-                                            )
-                                        }
-                                       
-                                    </div>
-                                </div>
-                        ))
-                    }
-              
+                {
+                    propEmails?.map((email, index)=>(
+                        <div key={email} className="flex gap-4 w-full items-center">
+                            <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
+                            <div className='flex gap-3 w-max'>
+                                {
+                                    propEmails?.length !== 1 && (
+                                        <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600">
+                                            Use Email
+                                        </button>
+                                    )
+                                }
+                                
+                            </div>
+                        </div>
+                    ))
+                }
             </PopoverContent>
         </Popover>
         <Dialog className="w-screen relative">

@@ -9,7 +9,7 @@ export default function Home() {
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([{name:'sheypete', emails:['petrusheya@gmail.com']}])
+  const [leadsData, setLeadsData] = useState([{name:'sheypete', emails:['petrusheya@gmail.com', 'hellothere@hellothere.com']}, {name:'sheya', emails:['petrusheya+1@gmail.com']}])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
