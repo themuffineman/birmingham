@@ -9,7 +9,7 @@ export default function Home() {
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([{name:'sheypete', emails:['petrusheya@gmail.com', 'hellothere@hellothere.com']}, {name:'sheya', emails:['petrusheya+1@gmail.com']}])
+  const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
@@ -19,7 +19,7 @@ export default function Home() {
     try {
       event.preventDefault()
       setIsStatus(true)
-      const socket = new WebSocket('wss://localhost:8080');  //papa-johns.com
+      const socket = new WebSocket('wss://papa-johns.onrender.com/scrape');  
       socket.addEventListener('open', () => {
           setStatusUpdate('WebSocket connection established');
       });
@@ -43,7 +43,7 @@ export default function Home() {
         }
       });
 
-      await fetch(`http://localhost:8080?service=${serviceRef.current.value}&location=${locationRef.current.value}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
+      await fetch(`https://papa-johns.onrender.com/scrape?service=${serviceRef.current.value}&location=${locationRef.current.value}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
     }catch (error) {
       console.error(error)
     }finally{
