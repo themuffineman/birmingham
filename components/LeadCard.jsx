@@ -33,7 +33,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
 
     function deleteLead(LeadIndex){ 
         setLeadsData((prev)=> {
-            return prev.filter((_, index) => index !== LeadIndex);
+            return prev.splice(LeadIndex, 1)
           });
     }
     function deleteEmails(emailIndex) {
@@ -96,7 +96,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                 {loading && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
             </button>
             <div>
-                <button onClick={()=> deleteLead()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
+                <button onClick={()=> deleteLead(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
             </div>
         </div>
     </div>
