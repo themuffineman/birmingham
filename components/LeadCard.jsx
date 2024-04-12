@@ -33,8 +33,10 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
 
     function deleteLead(LeadIndex){ 
         setLeadsData((prev)=> {
-            return prev.splice(LeadIndex, 1)
-          });
+            const copyPrev = [...prev]
+            copyPrev.splice(LeadIndex, 1)
+            return copyPrev
+        });
     }
     function deleteEmails(emailIndex) {
         setPropEmails(prev => {
