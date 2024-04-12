@@ -35,8 +35,9 @@ export default function Home() {
               setPagesToScrape(data.pages)
             }else{                             
               setLeadsData((prev)=> {
-                const copyPrev = JSON.parse(JSON.stringify(prev))
+                const copyPrev = prev? JSON.parse(JSON.stringify(prev)) : []
                 copyPrev.push(data)
+                return copyPrev
               })
               console.log('Received scraped data:', data);
             }
