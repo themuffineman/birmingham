@@ -44,12 +44,13 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         setPropEmails(prev => {
           return prev.filter((_, index) => index === emailIndex);
         });
+        
     }
 
   return (
     <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
-        <Popover >
+        <Popover>
             <PopoverTrigger>
                 <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
                     Emails

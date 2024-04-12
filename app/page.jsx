@@ -34,7 +34,10 @@ export default function Home() {
             if(data.pages){          // if we recieved a pages object then thats the number of pages to scrape, if not, then its a lead
               setPagesToScrape(data.pages)
             }else{                             
-              setLeadsData((prev)=> [...prev,data])
+              setLeadsData((prev)=> {
+                const copyPrev = JSON.parse(JSON.stringify(prev))
+                copyPrev.push(data)
+              })
               console.log('Received scraped data:', data);
             }
         }catch(error){
