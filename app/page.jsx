@@ -44,6 +44,7 @@ export default function Home() {
       });
 
       await fetch(`https://papa-johns.onrender.com/scrape?service=${serviceRef.current.value}&location=${locationRef.current.value}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
+      socket.close()
     }catch (error) {
       console.error(error)
     }finally{
