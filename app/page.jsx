@@ -57,6 +57,7 @@ export default function Home() {
       },3000)
     }
   }
+  console.log('heres the leads data on page', leadsData)
   
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
