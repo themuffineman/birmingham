@@ -35,6 +35,8 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         setLeadsData((prev)=> {
             const copyPrev = JSON.parse(JSON.stringify(prev))
             copyPrev.splice(LeadIndex, 1)
+            console.log('heres the deep new copy ', copyPrev)
+            console.log('heres the original ', prev)
             return copyPrev
         });
     }
