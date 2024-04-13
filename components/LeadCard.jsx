@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
+    const newEmail = useRef(null)
 
    
     async function sendEmail(name, email){
@@ -34,25 +35,27 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         setLeadsData((prev)=> {
             const copyPrev = JSON.parse(JSON.stringify(prev))
             copyPrev.splice(LeadIndex, 1)
-            console.log('heres the deep new copy ', copyPrev)
-            console.log('heres the original ', prev)
             return copyPrev
         });
     }
     function deleteEmails(emailIndex) {
         setLeadsData((prev) => {
             const updatedLeads = [...prev];
-
             const leadCopy = { ...updatedLeads[index] };
-
             const emailToKeep = leadCopy.emails[emailIndex];
             leadCopy.emails = [emailToKeep];
-
             updatedLeads[index] = leadCopy;
-
             return updatedLeads;
         });
- 
+    }
+    function editEmails(emailIndex,text){
+        setLeadsData((prev) => {
+            const updatedLeads = [...prev];
+            const leadCopy = { ...updatedLeads[index] };
+            leadCopy.emails[emailIndex] = text
+            updatedLeads[index] = leadCopy;
+            return updatedLeads;  
+        });
     }
 
   return (
@@ -71,6 +74,21 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                         <div key={email} className="flex gap-4 w-full items-center">
                             <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
                             <div className='flex gap-3 w-max'>
+                                {
+                                    emails?.length === 1 &&(
+                                        <Popover>
+                                            <PopoverTrigger>
+                                                <button className='p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600'>Edit Email</button>
+                                            </PopoverTrigger>
+                                            <PopoverContent>
+                                                <div className='flex flex-col items-start gap-2 p-2 bg-white w-full'>
+                                                    <input ref={newEmail} type="text" className='w-full p-2 bg-neutral-300' />
+                                                    <button onClick={()=> editEmails(index , newEmail.current.value)} className='p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600'>Submit</button>
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                    )
+                                }
                                 {
                                     emails?.length !== 1 && (
                                         <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600">
