@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
+import { trusted } from "mongoose";
 
 export default function Home() {
   const serviceRef = useRef(null)
@@ -14,14 +15,16 @@ export default function Home() {
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
   const [emailsSent, setEmailsSent] = useState(0)
-  
+  const [websocketLive, setWebsocketLive] = useState(false)
+  let socket;
   async function fetchLeads(event){
     try {
       event.preventDefault()
       setIsStatus(true)
-      const socket = new WebSocket('wss://papa-johns.onrender.com/scrape');  
+      socket = new WebSocket('wss://papa-johns.onrender.com/scrape');  
       socket.addEventListener('open', () => {
           setStatusUpdate('WebSocket connection established');
+          setWebsocketLive(trusted)
       });
       socket.addEventListener('error', (error) => {
         console.error('WebSocket error:', error);
@@ -49,6 +52,7 @@ export default function Home() {
 
       await fetch(`https://papa-johns.onrender.com/scrape?service=${serviceRef.current.value}&location=${locationRef.current.value}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
       socket.close()
+      setWebsocketLive(false)
     }catch (error) {
       console.error(error)
     }finally{
@@ -57,7 +61,12 @@ export default function Home() {
       },3000)
     }
   }
-  console.log('heres the leads data on page', leadsData)
+  function closeWebsocket(){
+    if (socket) {
+      socket.close();
+      console.log('WebSocket connection closed manually');
+    }
+  }
   
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
@@ -79,7 +88,10 @@ export default function Home() {
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
         </div>
         <div className="w-max flex justify-between items-center p-2">
-          <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-600 hover:text-black hover:bg-yellow-300">Run</button>
+          <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Run</button>
+          {
+            websocketLive && <button onClick={()=> closeWebsocket()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-500 hover:text-black hover:bg-red-600">Cancel</button>
+          }
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">

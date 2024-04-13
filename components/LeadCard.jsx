@@ -23,7 +23,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setEmailsSent(prev => prev+1)
             deleteLead(index) 
 
-        } catch (error) {
+        }catch (error) {
             console.error(error)
         }finally{
             setLoading(false)
