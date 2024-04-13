@@ -8,7 +8,6 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
-    const propEmails = JSON.parse(JSON.stringify(emails))
 
    
     async function sendEmail(name, email){
@@ -41,18 +40,19 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         });
     }
     function deleteEmails(emailIndex) {
-        // setPropEmails(prev => {
-        //   return prev.filter((_, index) => index === emailIndex);
-        // });
-        setLeadsData((prev)=>{
-            let leadCopy = JSON.parse(JSON.stringify(prev[index]))
-            let emailCopies = JSON.parse(JSON.stringify(leadCopy.emails))
-            let filteredCopies = emailCopies.filter((_, index) => index === emailIndex);
-            leadCopy.emails = filteredCopies
-            prev[index] = leadCopy
-            return prev;
-        })
-        
+        setLeadsData((prev) => {
+            const updatedLeads = [...prev];
+
+            const leadCopy = { ...updatedLeads[index] };
+
+            const emailToKeep = leadCopy.emails[emailIndex];
+            leadCopy.emails = [emailToKeep];
+
+            updatedLeads[index] = leadCopy;
+
+            return updatedLeads;
+        });
+ 
     }
 
   return (
@@ -72,7 +72,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                             <div className='text-black flex-1 w-full font-semibold text-base'>{email}</div>
                             <div className='flex gap-3 w-max'>
                                 {
-                                    propEmails?.length !== 1 && (
+                                    emails?.length !== 1 && (
                                         <button onClick={()=> deleteEmails(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600">
                                             Use Email
                                         </button>

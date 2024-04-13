@@ -16,10 +16,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav className="flex w-max gap-4 rounded-md p-2 bg-neutral-300 fixed top-3 left-1/2 -translate-x-1/2  ">
-            <Link className="text-md font-semibold hover:text-neutral-500 text-black" href={'/'}>Home</Link>
-            <Link className="text-md font-semibold hover:text-neutral-500 text-black" href={'/client-management'}>CRM</Link>  
-        </nav>
         {children}
       </body>
     </html>
