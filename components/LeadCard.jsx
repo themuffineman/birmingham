@@ -30,7 +30,6 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setLoading(false)
         }
     }   
-
     function deleteLead(LeadIndex){ 
         setLeadsData((prev)=> {
             const copyPrev = JSON.parse(JSON.stringify(prev))
