@@ -17,6 +17,7 @@ export default function Home() {
   const [emailsSent, setEmailsSent] = useState(0)
   const [websocketLive, setWebsocketLive] = useState(false)
   let socket;
+  
   async function fetchLeads(event){
     try {
       event.preventDefault()
