@@ -17,7 +17,7 @@ export default function Home() {
   const [emailsSent, setEmailsSent] = useState(0)
   const [websocketLive, setWebsocketLive] = useState(false)
   let socket;
-  
+
   async function fetchLeads(event){
     try {
       event.preventDefault()
@@ -25,7 +25,7 @@ export default function Home() {
       socket = new WebSocket('wss://papa-johns.onrender.com/scrape');  
       socket.addEventListener('open', () => {
           setStatusUpdate('WebSocket connection established');
-          setWebsocketLive(trusted)
+          setWebsocketLive(true)
       });
       socket.addEventListener('error', (error) => {
         console.error('WebSocket error:', error);
