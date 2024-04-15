@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
-import { trusted } from "mongoose";
 
 export default function Home() {
   const serviceRef = useRef(null)
@@ -24,8 +23,8 @@ export default function Home() {
       setIsStatus(true)
       socket = new WebSocket('wss://papa-johns.onrender.com/scrape');  
       socket.addEventListener('open', () => {
-          setStatusUpdate('WebSocket connection established');
-          setWebsocketLive(true)
+        setWebsocketLive(true)
+        setStatusUpdate('WebSocket connection established');
       });
       socket.addEventListener('error', (error) => {
         console.error('WebSocket error:', error);
@@ -88,7 +87,7 @@ export default function Home() {
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
         </div>
-        <div className="w-max flex justify-between items-center p-2">
+        <div className="w-max flex flex-col gap-2 justify-between items-center p-2">
           <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Run</button>
           {
             websocketLive && <button onClick={()=> closeWebsocket()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-500 hover:text-black hover:bg-red-600">Cancel</button>
