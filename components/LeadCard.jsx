@@ -18,7 +18,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             const confirmation = await res.json()
             if (confirmation.error){
                 alert('Error Sending Email')
-                throw new Error(confirmation.error)
+                throw new Error(confirmation)
             }
             console.log('Success Sending Email:', confirmation)
             setEmailsSent(prev => prev+1)
