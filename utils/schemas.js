@@ -6,7 +6,7 @@ const LeadSchema = new Schema({
     name: String,
     email: {
         type: String,
-        unique: false
+        unique: true
     }
 })
 

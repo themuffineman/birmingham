@@ -1,4 +1,6 @@
 import sgMail from '@sendgrid/mail'
+import connectDB from '@/utils/connectDB';
+import Lead from '@/utils/schemas'
 
 export async function POST(req){
 
@@ -13,6 +15,11 @@ export async function POST(req){
         if (!emailPattern.test(email)){
             throw new Error('Invalid Email Format');
         }
+        await connectDB()
+        const newLead = await Lead.create({
+            name: name,
+            email: email
+        })
 
         const mailOptions = {
             to: email,
