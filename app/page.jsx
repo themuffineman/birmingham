@@ -6,8 +6,6 @@ import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
-  const serviceRef = useRef(null)
-  const locationRef = useRef(null)
   const pagesRef= useRef(null)
   const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
@@ -52,7 +50,7 @@ export default function Home() {
         }
       });
 
-      await fetch(`https://papa-johns.onrender.com/scrape?service=${serviceRef.current.value}&location=${locationRef.current.value}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
+      await fetch(`https://papa-johns.onrender.com/scrape?service=${service}&location=${location}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
       socket.close()
     }catch (error) {
       console.error(error)
