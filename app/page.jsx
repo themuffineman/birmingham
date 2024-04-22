@@ -9,11 +9,13 @@ export default function Home() {
   const serviceRef = useRef(null)
   const locationRef = useRef(null)
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([])
+  const [leadsData, setLeadsData] = useState([{name:'Shakes', emails:['petrusheya+4@gmail.com']}])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
   const [emailsSent, setEmailsSent] = useState(0)
+  const [location, setLocation] = useState('')
+  const [service, setService] = useState('')
   const [websocketLive, setWebsocketLive] = useState(false)
   let socket;
 
@@ -80,8 +82,8 @@ export default function Home() {
       </div>
       <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
-          <input ref={serviceRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
-          <input ref={locationRef} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Location"/>
+          <input onChange={(e)=> setService(e.target.value)} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
+          <input onChange={(e)=> setLocation(e.target.value)} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Location"/>
           <input ref={pagesRef} type="number" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-20 rounded-md" placeholder="Page#" />
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Max Pages: {pagesToScrape}</div>
           <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
@@ -96,7 +98,7 @@ export default function Home() {
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
-          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" setEmailsSent={setEmailsSent}/>
+          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" setEmailsSent={setEmailsSent} service={service} location={location}/>
         ))}
       </div>
       {isStatus && (

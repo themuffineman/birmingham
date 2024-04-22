@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
   
   
 
-const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
+const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent, location, service}) => {
 
     const [loading, setLoading] = useState(false)
     const newEmail = useRef(null)
@@ -14,7 +14,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     async function sendEmail(name, email){
         try {
             setLoading(true)
-            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email})})
+            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email, service: service, location: location})})
             const confirmation = await res.json()
             if (confirmation.error){
                 alert('Error Sending Email')
