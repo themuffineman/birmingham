@@ -17,8 +17,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email, service: service, location: location})})
             const confirmation = await res.json()
             if(confirmation.error){
-                alert(confirmation.error)
-                console.log(confirmation)
+                alert('Error Sending Email')
                 throw new Error(confirmation)
             }
             console.log('Success Sending Email:', confirmation)
