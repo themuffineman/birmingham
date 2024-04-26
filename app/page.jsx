@@ -7,7 +7,7 @@ import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([])
+  const [leadsData, setLeadsData] = useState([{name: 'peter', emails:['petrusheya@gmail.com']}, {name: 'pete', emails:['petrusheya+10@gmail.com']}])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
