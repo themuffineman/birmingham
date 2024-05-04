@@ -7,7 +7,7 @@ import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([])
+  const [leadsData, setLeadsData] = useState([{name: 'Petrus', emails:['petrus@peter.com']}])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
@@ -51,10 +51,10 @@ export default function Home() {
       });
 
       await fetch(`https://papa-johns.onrender.com/scrape?service=${service}&location=${location}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
-      socket.close()
     }catch (error) {
       console.error(error)
     }finally{
+      socket.close()
       setWebsocketLive(false)
       setTimeout(()=>{
         setIsStatus(false)

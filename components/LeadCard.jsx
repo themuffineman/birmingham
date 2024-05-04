@@ -8,7 +8,9 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent, location, service}) => {
 
     const [loading, setLoading] = useState(false)
+    const [templateName, setTemplateName] = useState(name)
     const newEmail = useRef(null)
+    const templateRef = useRef(null)
 
    
     async function sendEmail(name, email){
@@ -58,8 +60,21 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     }
 
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
+    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[75rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
+        <Popover>
+            <PopoverTrigger>
+                <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
+                    T-Name
+                    <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/></svg>
+                </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
+                <div className='flex flex-col items-start gap-2 p-2 bg-white w-full'>
+                    <input value={templateName} onChange={(e)=> {setTemplateName(e.target.value)}} type="text" className='w-full p-2 bg-neutral-300' />
+                </div>
+            </PopoverContent>
+        </Popover>
         <Popover>
             <PopoverTrigger>
                 <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
