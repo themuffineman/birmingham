@@ -60,7 +60,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     }
 
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[75rem] rounded-md p-4'>
+    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
         <Popover>
             <PopoverTrigger>
