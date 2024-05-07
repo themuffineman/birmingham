@@ -10,7 +10,8 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
 
     const [loading, setLoading] = useState(false)
     const [templateName, setTemplateName] = useState(name)
-    const [templateImage, setTemplateImage] = useState('')
+    const [templateImage, setTemplateImage] = useState('https://cdn.builder.io/api/v1/image/assets/TEMP/7d7f4c2c557b6c34a84a34bd839847f95120f9763904a4ef6ae674a64edb2cb7?placeholderIfAbsent=true')
+    const [imageLoading, setImageLoading] = useState(false)
     const newEmail = useRef(null)
 
    
@@ -65,17 +66,21 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     }
     async function getTemplate(){
         try {
-            const image = await fetch(`/api/get-template/?name=${templateName}`)
-            const imageJSON = await JSON.parse(image)
-            setTemplateImage(imageJSON.src)
+            setImageLoading(true)
+            const image = await fetch(`/api/get-template`, {method: "POST", body:JSON.stringify({name: templateName})})
+            const imageJSON = await image.json()
+            console.log('heres the src:', imageJSON)
+            setTemplateImage(`data:image/jpeg;base64,${imageJSON.src}`)
         } catch (error) {
             console.error(error)
             alert('Failed to generate image')
+        }finally{
+            setImageLoading(false)
         }
     }
 
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[70rem] rounded-md p-4'>
+    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
         <Popover>
             <PopoverTrigger>
@@ -95,12 +100,11 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                 Preview Template
                 <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm280-80q-82 0-146.5-44.5T240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280Zm0-60q56 0 102-26.5t72-73.5q-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340Zm0-100Zm0 60q25 0 42.5-17.5T540-440q0-25-17.5-42.5T480-500q-25 0-42.5 17.5T420-440q0 25 17.5 42.5T480-380Z"/></svg>
             </DialogTrigger>
-            <DialogContent className="w-[90vw]">
-                <Image
+            <DialogContent className="w-[90vw] h-[700px] overflow-hidden">
+                <img
                     alt='templateImage'
-                    layout='fill'
-                    src={templateImage? templateImage : 'https://cdn.builder.io/api/v1/image/assets/TEMP/7d7f4c2c557b6c34a84a34bd839847f95120f9763904a4ef6ae674a64edb2cb7?placeholderIfAbsent=true'}
-                    className='w-100% h-auto object-cover'
+                    src={templateImage}
+                    className='w-100% h-100% object-fit'
                 />
             </DialogContent>
         </Dialog>
