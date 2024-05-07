@@ -7,7 +7,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
 
     const [loading, setLoading] = useState(false)
     const [templateName, setTemplateName] = useState(name)
-    const [templateImage, setTemplateImage] = useState('https://cdn.builder.io/api/v1/image/assets/TEMP/7d7f4c2c557b6c34a84a34bd839847f95120f9763904a4ef6ae674a64edb2cb7?placeholderIfAbsent=true')
+    const [templateImage, setTemplateImage] = useState('')
     const [imageLoading, setImageLoading] = useState(false)
     const newEmail = useRef(null)
 
@@ -18,7 +18,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
                 throw new Error('No template')
             }
             setLoading(true)
-            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email, service: service, location: location})})
+            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email, src: templateImage})})
             const confirmation = await res.json()
             if(confirmation.error){
                 alert('Error Sending Email')
