@@ -1,3 +1,5 @@
+import { sendStatusCode } from "next/dist/server/api-utils"
+
 export async function GET(req){
 
     try {
@@ -9,6 +11,6 @@ export async function GET(req){
         return Response.json({src: src}, {status: 200})
     } catch (error) {
         console.error(error)
-        return Response.error()
+        return Response.error().status({StatusCode: 500})
     }
 }
