@@ -34,7 +34,7 @@ export default function Home() {
   }
 
   function createLeads(){
-    fetch('https://papa-johns.onrender.com')
+    fetch('https://papa-johns.onrender.com/leads')
   }
 
   // async function fetchLeads(event){
