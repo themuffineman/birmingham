@@ -1,20 +1,20 @@
 "use client"
 import LeadCard from "@/components/LeadCard";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
-  const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([])
-  const [statusUpdate, setStatusUpdate] = useState('Running')
+  // const pagesRef= useRef(null)
+  // const [statusUpdate, setStatusUpdate] = useState('Running')
+  // const [pagesToScrape, setPagesToScrape] = useState(0)
+  // const [location, setLocation] = useState('')
+  // const [service, setService] = useState('')
+  // const [websocketLive, setWebsocketLive] = useState(false)
   const [isStatus, setIsStatus] = useState(false)
-  const [pagesToScrape, setPagesToScrape] = useState(0)
   const [emailsSent, setEmailsSent] = useState(0)
-  const [location, setLocation] = useState('')
-  const [service, setService] = useState('')
-  const [websocketLive, setWebsocketLive] = useState(false)
+  const [leadsData, setLeadsData] = useState([])
   let socket;
 
 
@@ -23,7 +23,6 @@ export default function Home() {
       setIsStatus(true)
       const response = await fetch('/api/get-leads')
       const responseJSON = await response.json()
-      console.log(responseJSON)
       setLeadsData(responseJSON.leads)
     } catch (error) {
       console.error(error)

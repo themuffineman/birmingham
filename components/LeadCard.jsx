@@ -65,7 +65,6 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setImageLoading(true)
             const image = await fetch(`/api/get-template`, {method: "POST", body:JSON.stringify({name: templateName})})
             const imageJSON = await image.json()
-            console.log('heres the src:', imageJSON.src)
             setTemplateImage(imageJSON.src)
         } catch (error) {
             console.error(error)
