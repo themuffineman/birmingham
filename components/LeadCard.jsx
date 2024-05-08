@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
-const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent, location, service}) => {
+const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
     const [templateName, setTemplateName] = useState(name)
@@ -65,8 +65,8 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setImageLoading(true)
             const image = await fetch(`/api/get-template`, {method: "POST", body:JSON.stringify({name: templateName})})
             const imageJSON = await image.json()
-            console.log('heres the src:', imageJSON)
-            setTemplateImage(`data:image/jpeg;base64,${imageJSON.src}`)
+            console.log('heres the src:', imageJSON.src)
+            setTemplateImage(imageJSON.src)
         } catch (error) {
             console.error(error)
             alert('Failed to generate image')
@@ -99,7 +99,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             <DialogContent className="w-[90vw] h-[700px] overflow-hidden">
                 <img
                     alt='templateImage'
-                    src={templateImage}
+                    src={templateImage && `data:image/jpeg;base64,${templateImage}`}
                     className='w-100% h-100% object-fit'
                 />
             </DialogContent>
