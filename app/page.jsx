@@ -4,6 +4,7 @@ import { useState } from "react";
 import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
 export default function Home() {
   // const pagesRef= useRef(null)
@@ -30,6 +31,10 @@ export default function Home() {
     }finally{
       setIsStatus(false)
     }
+  }
+
+  function createLeads(){
+    fetch('https://papa-johns.onrender.com')
   }
 
   // async function fetchLeads(event){
@@ -97,6 +102,14 @@ export default function Home() {
         <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
         <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
         <button onClick={()=> fetchLeads()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Fetch Leads</button>
+        <Popover>
+            <PopoverTrigger>
+              <button className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-700 hover:text-black hover:bg-yellow-500">Create Leads</button>                
+            </PopoverTrigger>
+            <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
+              <button onClick={()=> createLeads()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Are you sure?</button>                
+            </PopoverContent>
+        </Popover>
       </div>
       {/* <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
