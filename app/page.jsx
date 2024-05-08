@@ -1,14 +1,13 @@
 "use client"
 import LeadCard from "@/components/LeadCard";
-import { MongoClient } from "mongodb";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([{name: 'Pendora Studios', emails: ['petrusheya+12@gmail.com']}])
+  const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
@@ -18,34 +17,19 @@ export default function Home() {
   const [websocketLive, setWebsocketLive] = useState(false)
   let socket;
 
-  useEffect(fetchLeads,[])
 
-  const fetchLeads = async ()=>{
+  async function fetchLeads(){
     try {
-      const client = new MongoClient(process.env.MONGODB_URI)
-      await client.connect()
-      const intermidaryCollection = client.db('pendora').collection('intermediary')
-      const emailDocuments = await intermidaryCollection.find({}).toArray()
-      console.log(emailDocuments)
-      // let time = (20/emailDocuments.length)*1000
-      for (document of emailDocuments){
-        const lead = {name: document.name, emails: document.emails, url: document.url, platform: document.platform}
-        setLeadsData((prev)=> {
-          const copyPrev = prev? JSON.parse(JSON.stringify(prev)) : []
-          copyPrev.push(lead)
-          return copyPrev;
-        })
-        await new Promise((resolve, reject)=>{
-          setTimeout(()=>{
-            resolve()
-          }, 2000)
-        })
-
-      }
-      // setLeadsData(emailDocuments)
+      setIsStatus(true)
+      const response = await fetch('/api/get-leads')
+      const responseJSON = await response.json()
+      console.log(responseJSON)
+      setLeadsData(responseJSON.leads)
     } catch (error) {
       console.error(error)
       alert("Error fetching leads from db")
+    }finally{
+      setIsStatus(false)
     }
   }
 
@@ -110,6 +94,11 @@ export default function Home() {
         priority={true}
         />
       </div>
+      <div className="w-max flex gap-4 items-center p-2">
+        <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
+        <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
+        <button onClick={()=> fetchLeads()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Fetch Leads</button>
+      </div>
       {/* <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
           <input onChange={(e)=> setService(e.target.value)} type="text" required={true} className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-md" placeholder="Enter Service"/>
@@ -131,12 +120,12 @@ export default function Home() {
           <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" setEmailsSent={setEmailsSent} service={service} location={location}/>
         ))}
       </div>
-      {/* {isStatus && (
+      {isStatus && (
         <div className={`w-max flex justify-between items-center p-3 fixed bottom-4 ${styles.status} left-1/2 -translate-x-1/2 bg-black rounded-md`}>
-          <div className="size-5 rounded-full border-2 border-black border-t-white border-b-white animate-spin"/>
-          <p className="p-2 text-white text-base font-normal">{statusUpdate}</p>
+          <div className={`${styles.spin} size-5 rounded-full border-2 border-black border-t-white border-b-white animate-spin`}/>
+          <p className="p-2 text-white text-base font-normal">Fetching Leads</p>
         </div>
-      )} */}
+      )}
     </main>
   );
 }

@@ -10,3 +10,12 @@
 .status{
     animation: rise_up .5s ease
 }
+.spin{
+    animation: loading infinite .5s linear
+}
+
+@keyframes loading {
+    to{
+        transform: rotate(360deg);
+    }
+}
