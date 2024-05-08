@@ -4,7 +4,7 @@ import { useState } from "react";
 import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 export default function Home() {
   // const pagesRef= useRef(null)
