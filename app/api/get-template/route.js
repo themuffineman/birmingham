@@ -4,7 +4,7 @@ export async function POST(req){
     try {
         const {name} = await req.json()
         console.log('name is', name)
-        const result = await fetch(`http://localhost:8080/screenshot/?name=${name}`)
+        const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${name}`)
         const resultJSON = await result.json()
         const src = resultJSON.src
 
