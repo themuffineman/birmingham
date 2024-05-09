@@ -63,9 +63,9 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     async function getTemplate(){
         try {
             setImageLoading(true)
-            const image = await fetch(`/api/get-template`, {method: "POST", body: JSON.stringify({name: templateName})})
-            const imageJSON = await image.json()
-            setTemplateImage(imageJSON.src)
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${templateName}`)
+            const resultJSON = await result.json()
+            setTemplateImage(resultJSON.src)
         } catch (error) {
             console.error(error)
             alert('Failed to generate image')

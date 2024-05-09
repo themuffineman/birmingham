@@ -1,6 +1,5 @@
 import sgMail from '@sendgrid/mail'
 import connectDB from '@/utils/connectDB';
-import {MongoClient, ObjectId} from 'mongodb'
 import Lead from '@/utils/schemas'
 
 export async function POST(req){
@@ -48,13 +47,8 @@ export async function POST(req){
             name: name,
             email: email
         })
-        const client = new MongoClient(process.env.MONGODB_URI)
-        await client.connect()
-        const intermidaryCollection = client.db('pendora').collection('intermediary')
-        const deletion = await intermidaryCollection.deleteOne({ "emails": email });
 
         console.log(result)
-        console.log(deletion)
         return Response.json({result}, {status: 200})
     }catch(error){
         console.error(error)
