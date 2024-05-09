@@ -25,6 +25,7 @@ export default function Home() {
       const response = await fetch('/api/get-leads')
       const responseJSON = await response.json()
       setLeadsData(responseJSON.leads)
+      console.log(responseJSON)
     } catch (error) {
       console.error(error)
       alert("Error fetching leads from db")
