@@ -7,12 +7,7 @@ import papajohns from '../public/papajohns.jpg'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 export default function Home() {
-  // const pagesRef= useRef(null)
-  // const [statusUpdate, setStatusUpdate] = useState('Running')
-  // const [pagesToScrape, setPagesToScrape] = useState(0)
-  // const [location, setLocation] = useState('')
-  // const [service, setService] = useState('')
-  // const [websocketLive, setWebsocketLive] = useState(false)
+  
   const [isStatus, setIsStatus] = useState(false)
   const [emailsSent, setEmailsSent] = useState(0)
   const [leadsData, setLeadsData] = useState([])
@@ -102,6 +97,7 @@ export default function Home() {
       <div className="w-max flex gap-4 items-center p-2">
         <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Results: {leadsData?.length}</div>
         <div className="p-2 text-black bg-neutral-300 font-semibold w-max rounded-md">Emails Sent: {emailsSent}</div>
+        
         <button onClick={()=> fetchLeads()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Fetch Leads</button>
         <Popover>
             <PopoverTrigger>
