@@ -51,7 +51,7 @@ export async function POST(req){
         const client = new MongoClient(process.env.MONGODB_URI)
         await client.connect()
         const intermidaryCollection = client.db('pendora').collection('intermediary')
-        const deletion = await intermidaryCollection.deleteOne({ [email]: email });
+        const deletion = await intermidaryCollection.deleteOne({ "emails": email });
 
         console.log(result)
         console.log(deletion)
