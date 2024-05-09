@@ -1,15 +1,20 @@
 "use client"
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
 const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
-    const [templateName, setTemplateName] = useState(name)
+    const [templateName, setTemplateName] = useState('')
     const [templateImage, setTemplateImage] = useState('')
     const [imageLoading, setImageLoading] = useState(false)
     const newEmail = useRef(null)
+
+    useEffect(()=>{
+        let copyName = JSON.parse(JSON.stringify(name))
+        setTemplateName(copyName)
+    },[])
 
     async function sendEmail(name, email){
         try {
