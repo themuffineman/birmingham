@@ -33,7 +33,7 @@ export default function Home() {
     }
   }
 
-  function createLeads(){
+  async function createLeads(){
     fetch('https://papa-johns.onrender.com/leads')
   }
 
@@ -104,7 +104,7 @@ export default function Home() {
         <button onClick={()=> fetchLeads()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Fetch Leads</button>
         <Popover>
             <PopoverTrigger>
-              <button className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-700 hover:text-black hover:bg-yellow-500">Create Leads</button>                
+              <div className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-700 hover:text-black hover:bg-yellow-500">Create Leads</div>                
             </PopoverTrigger>
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
               <button onClick={()=> createLeads()} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Are you sure?</button>                
@@ -129,7 +129,7 @@ export default function Home() {
       </form> */}
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
-          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" setEmailsSent={setEmailsSent} service={service} location={location}/>
+          <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} platform="google" setEmailsSent={setEmailsSent}/>
         ))}
       </div>
       {isStatus && (
