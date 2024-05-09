@@ -10,11 +10,8 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     const [templateImage, setTemplateImage] = useState('')
     const [imageLoading, setImageLoading] = useState(false)
     const newEmail = useRef(null)
+    const tempRef = useRef(null)
 
-    useEffect(()=>{
-        let copyName = JSON.parse(JSON.stringify(name))
-        setTemplateName(copyName)
-    },[])
 
     async function sendEmail(name, email){
         try {
@@ -68,7 +65,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     async function getTemplate(){
         try {
             setImageLoading(true)
-            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${templateName}`)
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempRef.current.value}`)
             const resultJSON = await result.json()
             setTemplateImage(resultJSON.src)
         } catch (error) {
@@ -85,13 +82,14 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
         <Popover>
             <PopoverTrigger>
                 <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
-                    T-Name
+                    Temp-Name
                     <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/></svg>
                 </div>
             </PopoverTrigger>
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
-                <div className='flex flex-col items-start gap-2 p-2 bg-white w-full'>
-                    <input value={templateName} onChange={(e)=> {setTemplateName(e.target.value)}} type="text" className='w-full p-2 bg-neutral-300' />
+                <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
+                    <div className='text-black text-base w-full '>{name}</div>
+                    <input ref={tempRef} type="text" className='w-full p-2 bg-neutral-300' />
                 </div>
             </PopoverContent>
         </Popover>
