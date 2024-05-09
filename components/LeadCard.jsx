@@ -65,7 +65,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
     async function getTemplate(){
         try {
             setImageLoading(true)
-            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempRef.current.value}`)
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${templateName}`)
             const resultJSON = await result.json()
             setTemplateImage(resultJSON.src)
         } catch (error) {
@@ -89,7 +89,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
                 <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
                     <div className='text-black text-base w-full '>{name}</div>
-                    <input ref={tempRef} type="text" className='w-full p-2 bg-neutral-300' />
+                    <input value={templateName} onChange={(e)=> setTemplateName(e.target.value)} type="text" className='w-full p-2 bg-neutral-300' />
                 </div>
             </PopoverContent>
         </Popover>
