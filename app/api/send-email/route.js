@@ -44,11 +44,6 @@ export async function POST(req){
         }
         
         const result = await sgMail.send(mailOptions)
-        
-        const newLead = await Lead.create({
-            name: name,
-            email: email
-        })
 
         console.log(result)
         return Response.json({result}, {status: 200})
