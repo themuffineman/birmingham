@@ -119,7 +119,7 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
                 <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
                     <div className='text-black text-base w-full '>{name}</div>
-                    <input value={tempName} type="text" className='w-full p-2 bg-neutral-300' />
+                    <input value={tempName} onChange={(e)=> editTempName(e.target.value)} type="text" className='w-full p-2 bg-neutral-300' />
                 </div>
             </PopoverContent>
         </Popover>
