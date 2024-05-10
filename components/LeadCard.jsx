@@ -3,7 +3,7 @@ import React, {useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
-const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, setEmailsSent}) => {
+const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent}) => {
 
     const [loading, setLoading] = useState(false)
     const [templateImage, setTemplateImage] = useState('')
@@ -93,6 +93,18 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setImageLoading(false)
         }
     }
+    function editTempName(name){
+        setLeadsData((prev)=>{
+            const newLead = prev.map((lead, leadIndex)=>{
+                if(index === leadIndex){
+                    return {...lead, tempName:name}
+                }else{
+                    return lead
+                }
+            })
+            return newLead;
+        })
+    }
 
   return (
     <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
@@ -107,7 +119,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
                 <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
                     <div className='text-black text-base w-full '>{name}</div>
-                    <input ref={tempRef} type="text" className='w-full p-2 bg-neutral-300' />
+                    <input value={tempName} type="text" className='w-full p-2 bg-neutral-300' />
                 </div>
             </PopoverContent>
         </Popover>
