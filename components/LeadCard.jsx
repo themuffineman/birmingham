@@ -6,18 +6,17 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src}) => {
 
     const [loading, setLoading] = useState(false)
-    const [templateImage, setTemplateImage] = useState('')
     const [imageLoading, setImageLoading] = useState(false)
     const newEmail = useRef(null)
 
     async function sendEmail(name, email){
         try {
-            if(!templateImage){
+            if(!src){
                 alert('Template not generated')
                 throw new Error('No template')
             }
             setLoading(true)
-            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email, src: templateImage})})
+            const res = await fetch('/api/send-email', {method: "POST" , body: JSON.stringify({name: name, email: email, src: src})})
             const confirmation = await res.json()
             if(confirmation.error){
                 alert('Error Sending Email')
