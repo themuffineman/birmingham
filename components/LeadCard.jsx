@@ -3,14 +3,12 @@ import React, {useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
-const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent}) => {
+const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src}) => {
 
     const [loading, setLoading] = useState(false)
     const [templateImage, setTemplateImage] = useState('')
     const [imageLoading, setImageLoading] = useState(false)
     const newEmail = useRef(null)
-    const tempRef = useRef(null)
-
 
     async function sendEmail(name, email){
         try {
@@ -83,9 +81,18 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
     async function getTemplate(){
         try {
             setImageLoading(true)
-            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempRef.current.value}`)
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempName}`)
             const resultJSON = await result.json()
-            setTemplateImage(resultJSON.src)
+            setLeadsData((prev)=>{
+                const newLeads = prev.map((lead, leadIndex)=>{
+                    if(leadIndex === index){
+                        return {...lead, src: resultJSON.src}
+                    }else{
+                        return lead
+                    }
+                })
+                return newLeads
+            })
         } catch (error) {
             console.error(error)
             alert('Failed to generate image')
@@ -105,7 +112,6 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
             return newLead;
         })
     }
-
   return (
     <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
         <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
@@ -131,7 +137,7 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
             <DialogContent className="w-[90vw] h-[700px] overflow-hidden">
                 <img
                     alt='templateImage'
-                    src={templateImage && `data:image/jpeg;base64,${templateImage}`}
+                    src={`data:image/jpeg;base64,${src}`}
                     className='w-100% h-100% object-fit'
                 />
             </DialogContent>
@@ -158,7 +164,7 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
                                             <PopoverContent>
                                                 <div className='flex flex-col items-start gap-2 p-2 bg-white w-full'>
                                                     <input ref={newEmail} type="text" className='w-full p-2 bg-neutral-300' />
-                                                    <button onClick={()=> editEmails(index , newEmail.current.value)} className='p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600'>Submit</button>
+                                                    <button onClick={()=> editEmails(newEmail.current.value)} className='p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-green-400 hover:text-black hover:bg-green-600'>Submit</button>
                                                 </div>
                                             </PopoverContent>
                                         </Popover>
