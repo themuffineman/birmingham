@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
@@ -36,30 +36,49 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setLoading(false)
         }
     }   
-    function deleteLead(LeadIndex){ 
+    function deleteLead(leadIndex){   
         setLeadsData((prev)=> {
-            const copyPrev = JSON.parse(JSON.stringify(prev))
-            copyPrev.splice(LeadIndex, 1)
-            return copyPrev
+            // const copyPrev = JSON.parse(JSON.stringify(prev))
+            // copyPrev.splice(LeadIndex, 1)
+            // return copyPrev
+            const newPrev = prev.filter((_, index)=> leadIndex !== index)
+            return newPrev
         });
     }
-    function deleteEmails(emailIndex) {
+    function deleteEmails(emailIndex){
         setLeadsData((prev) => {
-            const updatedLeads = [...prev];
-            const leadCopy = { ...updatedLeads[index] };
-            const emailToKeep = leadCopy.emails[emailIndex];
-            leadCopy.emails = [emailToKeep];
-            updatedLeads[index] = leadCopy;
-            return updatedLeads;
+            // const updatedLeads = [...prev];
+            // const leadCopy = { ...updatedLeads[index] };
+            // const emailToKeep = leadCopy.emails[emailIndex];
+            // leadCopy.emails = [emailToKeep];
+            // updatedLeads[index] = leadCopy;
+            // return updatedLeads;
+
+            const newLeads = prev.map((lead,leadIndex)=>{
+                if(leadIndex === index){
+                    const newEmails = lead.emails.filter((_,index)=> index === emailIndex )
+                    return {...lead, emails: newEmails}
+                }else{
+                    return lead
+                }
+            })
+            return newLeads
         });
     }
-    function editEmails(emailIndex,text){
+    function editEmails(text){
         setLeadsData((prev) => {
-            const updatedLeads = [...prev];
-            const leadCopy = { ...updatedLeads[index] };
-            leadCopy.emails[emailIndex] = text
-            updatedLeads[index] = leadCopy;
-            return updatedLeads;  
+
+
+            const newLeads = prev.map((lead, leadIndex)=>{
+                if(leadIndex === index){
+                    return {...lead, emails: [`${text}`]}
+                }else{
+                    return lead
+                }
+            })
+            return newLeads 
+
+
         });
     }
     async function getTemplate(){
@@ -75,6 +94,9 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             setImageLoading(false)
         }
     }
+    function editTempName(text){
+        setTemplateName(text)
+    }
 
   return (
     <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
@@ -89,7 +111,7 @@ const LeadCard = ({platform = 'google', emails, name, url, index, setLeadsData, 
             <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
                 <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
                     <div className='text-black text-base w-full '>{name}</div>
-                    <input value={templateName} onChange={(e)=> setTemplateName(e.target.value)} type="text" className='w-full p-2 bg-neutral-300' />
+                    <input value={templateName} onChange={(e)=> editTempName(e.target.value)} type="text" className='w-full p-2 bg-neutral-300' />
                 </div>
             </PopoverContent>
         </Popover>
