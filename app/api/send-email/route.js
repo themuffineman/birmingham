@@ -1,22 +1,24 @@
 import sgMail from '@sendgrid/mail'
-import connectDB from '@/utils/connectDB';
-import Lead from '@/utils/schemas'
-
+import { MongoClient } from 'mongodb';
 export async function POST(req){
 
     sgMail.setApiKey(process.env.SENDGRID_KEY)
+    
 
     try{
         const {name, email, src} = await req.json()
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
         if (typeof email !== 'string'){
-            throw new Error('Expected String');
+            throw new Error('Expected Email String');
         }
         if (!emailPattern.test(email)){
             throw new Error('Invalid Email Format');
         }
-        await connectDB()
-        const dataEmailExists = await Lead.findOne({email: email})
+        const client = new MongoClient(process.env.MONGODB_URI)
+        await client.connect()
+        const emailsCollection = client.db('pendora').collection('leads')
+        const dataEmailExists = await emailsCollection.findOne({email: email})
         if(dataEmailExists){
             throw new Error('Email Already Exists')
         }
