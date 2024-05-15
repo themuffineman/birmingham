@@ -19,6 +19,7 @@ export async function POST(req){
         await client.connect()
         const emailsCollection = client.db('pendora').collection('leads')
         const dataEmailExists = await emailsCollection.findOne({email: email})
+       
         if(dataEmailExists){
             throw new Error('Email Already Exists')
         }
@@ -44,8 +45,10 @@ export async function POST(req){
         }
         
         const result = await sgMail.send(mailOptions)
+        const dbResult = await emailsCollection.insertOne({name, email})
 
         console.log(result)
+        console.log(dbResult)
         return Response.json({result}, {status: 200})
     }catch(error){
         console.error(error)
