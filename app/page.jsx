@@ -80,11 +80,13 @@ export default function Home() {
         throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
       }
       const resultJSON = await result.json()
+
       const errorLeads = leadsData.filter((lead) => {
-        return resultJSON.some((errorLead) => {
+        return resultJSON.result.some((errorLead) => {
           return errorLead.email === lead.emails[0];
         });
       });
+
       setLeadsData(errorLeads)
       resultJSON.forEach((lead)=>{
         console.log('Email:', lead.email, ', contains error:', lead.error)
@@ -106,7 +108,7 @@ export default function Home() {
       }
       const newLeadsJSON = await newLeads.json()
       console.log('Heres the newLeadsJSON', newLeadsJSON)
-      setLeadsData(newLeadsJSON);
+      setLeadsData(newLeadsJSON.leads);
     } catch (error) {
       console.error(error);
     } finally {
