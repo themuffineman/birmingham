@@ -24,6 +24,9 @@ export async function POST(req){
                 if (!emailPattern.test(lead.email)){
                     throw new Error('Invalid Email Format');
                 }
+                if(!lead.src){
+                    throw new Error('Lead Has No src')
+                }
                 const mailOptions = {
                     to: lead.email,
                     from: {
@@ -43,16 +46,14 @@ export async function POST(req){
                         }
                     ]
                 }
-                
+
                 const dataEmailExists = await emailsCollection.findOne({email: lead.email})
                 if(dataEmailExists){
                     throw new Error('Emails Already Exists')
-                }else if(!lead.src){
-                    throw new Error('Lead Has No src')
                 }
                 await sgMail.send(mailOptions)
                 await emailsCollection.insertOne({name: lead.name, email: lead.email})
-                return 
+                return
             } catch(error) {
                 console.error(error)
                 return {email: lead.email, error}

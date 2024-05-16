@@ -62,7 +62,6 @@ export default function Home() {
       console.error(error)
     }
   }
-
   async function sendAllEmails(){
 
     const emailsData = leadsData.map((lead)=>{
@@ -90,12 +89,29 @@ export default function Home() {
   }
   async function generateAllTemplates(){
     try {
-      const emailsData = leadsData.map((lead)=>{
-        return {name: lead.name}
+      const newLeads = leadsData.map(async (lead)=>{
+        if(!lead.src){
+          try {
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.name}`)
+            const resultJSON = await result.json()
+            await new Promise((resolve)=>{
+              setTimeout(()=>{
+                resolve()
+              },3000)
+            })
+            return {...lead, src: resultJSON.src}
+            
+          } catch (error) {
+            console.error(error)
+            return
+          }
+        }else{
+          return
+        }
       })
-      await fetch('/api/get')
-    } catch (error) {
-      
+      setLeadsData(newLeads)
+    } catch (error){
+      console.error(error)
     }
   }
   
@@ -129,7 +145,7 @@ export default function Home() {
       </div>
       <div className="flex gap-4 w-max mt-20 ">
         <button onClick={()=> sendAllEmails()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Send All Emails</button>
-        <button className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Generate Templates</button>
+        <button onClick={()=> generateAllTemplates()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Generate Templates</button>
       </div>
       {isStatus && (
         <div className={`w-max flex justify-between items-center p-3 fixed bottom-4 ${styles.status} left-1/2 -translate-x-1/2 bg-black rounded-md`}>
