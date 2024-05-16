@@ -7,13 +7,15 @@ import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([])
+  const [leadsData, setLeadsData] = useState([{name: 'Peter', emails: ['petrusheya+20@gmail.com']}, {name: 'Petrus', emails: ['petrusheya+22@gmail.com']}, {name: 'Sheya', emails: ['petrusheya+23@gmail.com']}, {name: 'Shigwedha', emails: ['petrusheya+24@gmail.com']} ])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
   const [emailsSent, setEmailsSent] = useState(0)
   const [location, setLocation] = useState('')
   const [service, setService] = useState('')
+  const [isEmailAll,setIsEmailAll] = useState(false)
+  const [isTemplateAll,setIsTemplateAll] = useState(false)
   let socket;
 
   async function fetchLeads(event){
@@ -35,6 +37,11 @@ export default function Home() {
         },3000)
         socket.close()
       });
+
+      socket.addEventListener('close', ()=>{
+        setStatusUpdate('Websocket Closed')
+        setIsStatus(false)
+      })
 
 
       socket.addEventListener('message', event => {
@@ -63,7 +70,7 @@ export default function Home() {
     }
   }
   async function sendAllEmails(){
-
+    setIsEmailAll(true)
     const emailsData = leadsData.map((lead)=>{
       return {name: lead.name, email: lead.emails[0], src: lead.src}
     })
@@ -75,7 +82,7 @@ export default function Home() {
       const resultJSON = await result.json()
       const errorLeads = leadsData.filter((lead) => {
         return resultJSON.some((errorLead) => {
-            return errorLead.email === lead.emails[0];
+          return errorLead.email === lead.emails[0];
         });
       });
       setLeadsData(errorLeads)
@@ -84,36 +91,29 @@ export default function Home() {
       })
     } catch(error){
       console.log(error)
+    }finally{
+      setIsEmailAll(false)
     }
 
   }
-  async function generateAllTemplates(){
+  async function generateAllTemplates() {
+    setIsTemplateAll(true);
     try {
-      const newLeads = leadsData.map(async (lead)=>{
-        if(!lead.src){
-          try {
-            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.name}`)
-            const resultJSON = await result.json()
-            await new Promise((resolve)=>{
-              setTimeout(()=>{
-                resolve()
-              },3000)
-            })
-            return {...lead, src: resultJSON.src}
-            
-          } catch (error) {
-            console.error(error)
-            return
-          }
-        }else{
-          return
-        }
-      })
-      setLeadsData(newLeads)
-    } catch (error){
-      console.error(error)
+      const newLeads = await fetch('api/get-template', {method: "POST", body: JSON.stringify(leadsData)})
+      if(!newLeads.ok){
+        alert('Error Getting All Templates')
+        throw new Error('Error Getting All Templates')
+      }
+      const newLeadsJSON = await newLeads.json()
+      console.log('Heres the newLeadsJSON', newLeadsJSON)
+      setLeadsData(newLeadsJSON);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsTemplateAll(false);
     }
   }
+  
   
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
@@ -144,8 +144,14 @@ export default function Home() {
         ))}
       </div>
       <div className="flex gap-4 w-max mt-20 ">
-        <button onClick={()=> sendAllEmails()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Send All Emails</button>
-        <button onClick={()=> generateAllTemplates()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Generate Templates</button>
+        <button onClick={()=> sendAllEmails()} className="p-2 size-max flex gap-2 items-center rounded-md hover:ring active:translate-y-1 transition-transform border-2 border-black hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-500">
+          Send All Emails
+          {isEmailAll && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
+        </button>
+        <button onClick={()=> generateAllTemplates()} className="p-2 size-max flex gap-2 items-center rounded-md hover:ring active:translate-y-1 transition-transform border-2 border-black hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-500">
+          Generate All Templates
+          {isTemplateAll && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
+        </button>
       </div>
       {isStatus && (
         <div className={`w-max flex justify-between items-center p-3 fixed bottom-4 ${styles.status} left-1/2 -translate-x-1/2 bg-black rounded-md`}>
