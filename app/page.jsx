@@ -66,7 +66,7 @@ export default function Home() {
   async function sendAllEmails(){
 
     const emailsData = leadsData.map((lead)=>{
-      return {name: lead.name, email: lead.emails[0], src: lead?.src}
+      return {name: lead.name, email: lead.emails[0], src: lead.src}
     })
     try {
       const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(emailsData)})
@@ -80,10 +80,23 @@ export default function Home() {
         });
       });
       setLeadsData(errorLeads)
-    } catch (error) {
+      resultJSON.forEach((lead)=>{
+        console.log('Email:', lead.email, ', contains error:', lead.error)
+      })
+    } catch(error){
       console.log(error)
     }
 
+  }
+  async function generateAllTemplates(){
+    try {
+      const emailsData = leadsData.map((lead)=>{
+        return {name: lead.name}
+      })
+      await fetch('/api/get')
+    } catch (error) {
+      
+    }
   }
   
   return (
