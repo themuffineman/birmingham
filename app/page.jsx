@@ -7,7 +7,7 @@ import papajohns from '../public/papajohns.jpg'
 
 export default function Home() {
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([{name: 'Peter', emails: ['petrusheya+20@gmail.com']}, {name: 'Petrus', emails: ['petrusheya+22@gmail.com']}, {name: 'Sheya', emails: ['petrusheya+23@gmail.com']}, {name: 'Shigwedha', emails: ['petrusheya+24@gmail.com']} ])
+  const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
@@ -71,25 +71,16 @@ export default function Home() {
   }
   async function sendAllEmails(){
     setIsEmailAll(true)
-    const emailsData = leadsData.map((lead)=>{
-      return {name: lead.name, email: lead.emails[0], src: lead.src}
-    })
     try {
-      const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(emailsData)})
-      if (!result.ok) {
+      const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(leadsData)})
+      if (!result.ok){
         throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
       }
       const resultJSON = await result.json()
-
-      const errorLeads = leadsData.filter((lead) => {
-        return resultJSON.result.some((errorLead) => {
-          return errorLead.email === lead.emails[0];
-        });
-      });
-
-      setLeadsData(errorLeads)
-      resultJSON.forEach((lead)=>{
-        console.log('Email:', lead.email, ', contains error:', lead.error)
+      console.log('heres the json result', resultJSON)
+      setLeadsData(resultJSON.result)
+      resultJSON.result.forEach((lead)=>{
+        console.log('Email:', lead.emails[0], ', contains error:', lead.error)
       })
     } catch(error){
       console.log(error)

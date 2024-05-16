@@ -6,38 +6,18 @@ export async function POST(req){
         const leads = await req.json()
         console.log('Heres the leads req:', leads)
         for (const lead of leads) {
+            let resultJSON;
             try {
-                const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.name}`);
-                const resultJSON = await result.json();
-                if (!resultJSON.src) {
-                    throw new Error(`Src not found for: ${lead.name}`);
-                }
-                newLeads.push({ ...lead, src: resultJSON.src });
+                const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.TempName}`);
+                resultJSON = await result.json();
             } catch (error) {
                 console.error(error);
+            }finally{
+                newLeads.push({...lead, src: resultJSON.src ?? undefined});
             }
         }
 
-
-        // const newLeads = await Promise.all(
-        //     leads.map(async (lead) => {
-        //       try{
-        //         const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.name}`);
-        //         const resultJSON = await result.json();
-        //         if (!resultJSON.src) {
-        //           throw new Error('Failed to generate Template');
-        //         }
-        //         return { ...lead, src: resultJSON.src && resultJSON.src };
-        //       }catch (error) {
-        //         console.error(error);
-        //         return { ...lead, src: undefined };
-        //       }
-        //     })
-        // );
-        
-        const filteredLeads = newLeads.filter(lead => lead !== undefined)
-
-        return Response.json({leads: filteredLeads}, {status: 200})
+        return Response.json({leads: newLeads}, {status: 200})
     } catch (error) {
         console.error(error)
         return Response.json({error}, {status:500})

@@ -6,6 +6,7 @@ export async function POST(req){
     
 
     try{
+
         let errorLeads = []
         const emailData = await req.json()
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,17 +20,17 @@ export async function POST(req){
             
             try {
     
-                if (typeof lead.email !== 'string'){
+                if (typeof lead.emails[0] !== 'string'){
                     throw new Error('Expected Email String');
                 }
-                if (!emailPattern.test(lead.email)){
+                if (!emailPattern.test(lead.emails[0])){
                     throw new Error('Invalid Email Format');
                 }
-                if(!lead.src){
-                    throw new Error('Lead Has No src')
-                }
+                // if(!lead.src){
+                //     throw new Error('Lead Has No src')
+                // }
                 const mailOptions = {
-                    to: lead.email,
+                    to: lead.emails[0],
                     from: {
                         name: 'Pendora Studios',
                         email: 'pendorastudios@gmail.com'
@@ -37,25 +38,26 @@ export async function POST(req){
                     subject: 'Would you like help with your website?',
                     text: `Greetings ${lead.name}! I hope you're doing well! I'm Petrus, and I run a web design agency for A/E firms, and I'd love to work with your firm. That's why I went ahead and redesigned a section of your homepage (design is attached below) to demonstrate how your website could stand out among the best in your industry. If you're up for it I can build your firm a new website. If you're interested in this, simply let me know. Looking forward to potentially working together! Best regards Petrus PS: If you'd like to take a different design direction than the one I took, please feel free to let me know as well.`,
                     html: `<main style='display: flex; padding: 2rem; flex-direction: column; gap: 1rem; font-family: Arial, Helvetica, sans-serif;'><header><h1 style='font-size: 1rem; color: black; font-weight: bold; margin: .4rem;'>Greetings ${lead.name}! </h1><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>I hope you're doing well! I'm Petrus, and I run a web design agency for A/E firms, and I'd love to work with your firm.</p><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>That's why I went ahead and redesigned a section of your homepage (design is attached below) to demonstrate how your website could stand out among the best in your industry.</p><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>If you're up for it I can build your firm a new website </p><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>If you're interested in this, simply let me know or book a meeting with me using the link <a href="https://cal.com/pendora/30" target="_blank" style="color: blue; text-decoration: underline;">here</a>. Looking forward to potentially working together!</p></header><section style="display: flex; flex-direction: column; gap: 0;"><p style='font-weight: normal; margin: 0; padding-left: .4rem;'>Best regards</p><p style='font-size: .9rem; color: black; font-weight:400; margin: 0; padding-left: .4rem;'>PS: If you'd like to take a different design direction than the one I took, please feel free to let me know as well.</p>`,
-                    attachments:[
-                        {
-                            content: lead.src,
-                            filename: "Website Redesign.jpeg",
-                            type: "image/jpeg",
-                            disposition: "attachment"
+                    // attachments:[
+                    //     {
+                    //         content: lead.src,
+                    //         filename: "Website Redesign.jpeg",
+                    //         type: "image/jpeg",
+                    //         disposition: "attachment"
         
-                        }
-                    ]
+                    //     }
+                    // ]
                 }
 
-                const dataEmailExists = await emailsCollection.findOne({email: lead.email})
+                const dataEmailExists = await emailsCollection.findOne({email: lead.emails[0]})
                 if(dataEmailExists){
                     throw new Error('Emails Already Exists')
                 }
                 await sgMail.send(mailOptions)
-                await emailsCollection.insertOne({name: lead.name, email: lead.email})
+                await emailsCollection.insertOne({name: lead.name, email: lead.emails[0]})
             } catch(error) {
-                errorLeads.push({email: lead.email, error})
+                console.error(error)
+                errorLeads.push({...lead, error})
             }
         }
     
