@@ -192,10 +192,10 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
                 <span>Generate Template </span>
                 {imageLoading && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
             </button>
-            <button onClick={()=> sendEmail(name, emails[0])} className="p-2 w-max flex gap-3 items-center rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-300 text-base font-semibold">
+            {/* <button onClick={()=> sendEmail(name, emails[0])} className="p-2 w-max flex gap-3 items-center rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-300 text-base font-semibold">
                 <span>Send Email</span>
                 {loading && <span className='size-4 rounded-full border-2 border-t-neutral-400 animate-spin'/>}
-            </button>
+            </button> */}
             <div>
                 <button onClick={()=> deleteLead(index)} className="p-2 w-max rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-400 hover:text-black hover:bg-red-600 text-base font-semibold">Delete</button>
             </div>
