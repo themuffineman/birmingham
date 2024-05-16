@@ -44,9 +44,11 @@ export async function POST(req){
 
             try {
                 const dataEmailExists = await emailsCollection.findOne({email: lead.email})
-                if(dataEmailExists) return
-                const result = await sgMail.send(mailOptions)
-                const dbResult = await emailsCollection.insertOne({name: lead.name, email: lead.email})
+                if(dataEmailExists){
+                    throw new Error('Emails Already Exists')
+                }
+                await sgMail.send(mailOptions)
+                await emailsCollection.insertOne({name: lead.name, email: lead.email})
                 return 
             } catch(error) {
                 console.error(error)

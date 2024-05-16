@@ -14,7 +14,6 @@ export default function Home() {
   const [emailsSent, setEmailsSent] = useState(0)
   const [location, setLocation] = useState('')
   const [service, setService] = useState('')
-  const [websocketLive, setWebsocketLive] = useState(false)
   let socket;
 
   async function fetchLeads(event){
@@ -22,14 +21,22 @@ export default function Home() {
       event.preventDefault()
       setIsStatus(true)
       socket = new WebSocket('wss://papa-johns.onrender.com/scrape');  
+
       socket.addEventListener('open', () => {
-        setWebsocketLive(true)
         setStatusUpdate('WebSocket connection established');
       });
+
+
       socket.addEventListener('error', (error) => {
         console.error('WebSocket error:', error);
         setStatusUpdate(`Failed to connect to WebSocket`);
+        setTimeout(()=>{
+          setIsStatus(false)
+        },3000)
+        socket.close()
       });
+
+
       socket.addEventListener('message', event => {
         const message = event.data;
         try {
@@ -51,21 +58,32 @@ export default function Home() {
       });
 
       await fetch(`https://papa-johns.onrender.com/scrape?service=${service}&location=${location}&pageNumber=${pagesRef.current.value}`)  //papa-johns.com
-      socket.close()
     }catch (error) {
       console.error(error)
-    }finally{
-      setWebsocketLive(false)
-      setTimeout(()=>{
-        setIsStatus(false)
-      },3000)
     }
   }
-  function closeWebsocket(){
-    if (socket) {
-      socket.close();
-      console.log('WebSocket connection closed manually');
+
+  async function sendAllEmails(){
+
+    const emailsData = leadsData.map((lead)=>{
+      return {name: lead.name, email: lead.emails[0], src: lead?.src}
+    })
+    try {
+      const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(emailsData)})
+      if (!result.ok) {
+        throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
+      }
+      const resultJSON = await result.json()
+      const errorLeads = leadsData.filter((lead) => {
+        return resultJSON.some((errorLead) => {
+            return errorLead.email === lead.emails[0];
+        });
+      });
+      setLeadsData(errorLeads)
+    } catch (error) {
+      console.log(error)
     }
+
   }
   
   return (
@@ -89,15 +107,16 @@ export default function Home() {
         </div>
         <div className="w-max flex flex-col gap-2 justify-between items-center p-2">
           <button type="submit" className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Run</button>
-          {
-            websocketLive && <button onClick={()=> closeWebsocket()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-red-500 hover:text-black hover:bg-red-600">Cancel</button>
-          }
         </div>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
           <LeadCard key={index} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} setEmailsSent={setEmailsSent} tempName={lead.tempName} src={lead.src? lead.src : ''}/>
         ))}
+      </div>
+      <div className="flex gap-4 w-max mt-20 ">
+        <button onClick={()=> sendAllEmails()} className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Send All Emails</button>
+        <button className="p-2 w-36 rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-300 hover:text-black hover:bg-yellow-500">Generate Templates</button>
       </div>
       {isStatus && (
         <div className={`w-max flex justify-between items-center p-3 fixed bottom-4 ${styles.status} left-1/2 -translate-x-1/2 bg-black rounded-md`}>
