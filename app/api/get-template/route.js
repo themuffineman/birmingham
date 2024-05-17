@@ -8,7 +8,7 @@ export async function POST(req){
         for (const lead of leads) {
             let resultJSON;
             try {
-                const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.TempName}`);
+                const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}`);
                 resultJSON = await result.json();
             } catch (error) {
                 console.error(error);
