@@ -77,17 +77,13 @@ export default function Home(){
         if (!result.ok){
           throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
         }
-        setLeadsData((leads)=>{
-          return leads.filter((prevLead)=>{
-            prevLead.name !== lead.name
-          })
-        }) 
+        const newLeads = leadsData.filter(prevLead => prevLead.name !== lead.name);
+        setLeadsData(newLeads) 
       }catch(error){
         console.error('Lead: ', lead.name,'|',error)
-      }finally{
-        setIsEmailAll(false)
       }
     }
+    setIsEmailAll(false)
 
   }
   async function generateAllTemplates(){
