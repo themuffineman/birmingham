@@ -71,20 +71,21 @@ export default function Home(){
   }
   async function sendAllEmails(){
     setIsEmailAll(true)
+    const errorLeads = []
     for (const lead of leadsData){
       try {
         const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(lead)})
         if (!result.ok){
           throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
         }
-        const newLeads = leadsData.filter(prevLead => prevLead.name !== lead.name);
-        setLeadsData(newLeads) 
       }catch(error){
+        errorLeads.push(lead)
         console.error('Lead: ', lead.name,'|',error)
       }
     }
+    setLeadsData(errorLeads)
     setIsEmailAll(false)
-
+    
   }
   async function generateAllTemplates(){
     setIsTemplateAll(true);
