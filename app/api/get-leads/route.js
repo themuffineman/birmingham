@@ -10,7 +10,7 @@ export async function GET(){
         
         return Response.json({leads: emailDocuments}, {status: 200})
 
-    }catch{
+    }catch(error){
         console.error(error)
         return Response.json({error: error}, {status: 500})
     }

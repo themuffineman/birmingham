@@ -5,7 +5,7 @@ import styles from '../components/components.module.css'
 import Image from "next/image";
 import papajohns from '../public/papajohns.jpg'
 
-export default function Home() {
+export default function Home(){
   const pagesRef= useRef(null)
   const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
