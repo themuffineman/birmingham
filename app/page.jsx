@@ -71,35 +71,41 @@ export default function Home(){
   }
   async function sendAllEmails(){
     setIsEmailAll(true)
-    try {
-      const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(leadsData)})
-      if (!result.ok){
-        throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
+    for (const lead of leadsData){
+      try {
+        const result = await fetch('/api/send-email', {method: "POST", body: JSON.stringify(lead)})
+        if (!result.ok){
+          throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
+        }
+        setLeadsData((leads)=>{
+          return leads.filter((prevLead)=>{
+            prevLead.name !== lead.name
+          })
+        }) 
+      }catch(error){
+        console.error('Lead: ', lead.name,'|',error)
+      }finally{
+        setIsEmailAll(false)
       }
-      const resultJSON = await result.json()
-      console.log('heres the json result', resultJSON)
-      setLeadsData(resultJSON.result)
-      resultJSON.result.forEach((lead)=>{
-        console.log('Email:', lead.emails[0], ', contains error:', lead.error)
-      })
-    } catch(error){
-      console.log(error)
-    }finally{
-      setIsEmailAll(false)
     }
 
   }
-  async function generateAllTemplates() {
+  async function generateAllTemplates(){
     setIsTemplateAll(true);
     try {
-      const newLeads = await fetch('api/get-template', {method: "POST", body: JSON.stringify(leadsData)})
-      if(!newLeads.ok){
-        alert('Error Getting All Templates')
-        throw new Error('Error Getting All Templates')
+      let newLeads = []
+      for (const lead of leadsData) {
+        let resultJSON;
+        try {
+          const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}`);
+          resultJSON = await result.json();
+        } catch (error) {
+          console.error(error);
+        }finally{
+          newLeads.push({...lead, src: resultJSON.src ?? undefined});
+        }
       }
-      const newLeadsJSON = await newLeads.json()
-      console.log('Heres the newLeadsJSON', newLeadsJSON)
-      setLeadsData(newLeadsJSON.leads);
+      setLeadsData(newLeads)
     } catch (error) {
       console.error(error);
     } finally {
