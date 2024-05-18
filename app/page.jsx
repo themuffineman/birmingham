@@ -90,6 +90,7 @@ export default function Home(){
   }
   async function generateAllTemplates(){
     setIsTemplateAll(true);
+    console.log(niche)
     try {
       let newLeads = []
       for (const lead of leadsData) {
@@ -127,7 +128,7 @@ export default function Home(){
           Interior Designers
         </button>
         <button className={`w-max p-4 rounded-md bg-neutral-300 text-black text-base ${niche === 'architecture'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('architecture')}}>
-          Architecture Designers
+          Architects
         </button>
       </div>
       <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
