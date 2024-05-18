@@ -123,10 +123,10 @@ export default function Home(){
         />
       </div>
       <div className="flex gap-5">
-        <button className={`w-max p-4 text-black text-base ${niche === 'interior'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('interior')}}>
+        <button className={`w-max p-4 rounded-md bg-neutral-300 text-black text-base ${niche === 'interior'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('interior')}}>
           Interior Designers
         </button>
-        <button className={`w-max p-4 text-black text-base ${niche === 'architecture'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('architecture')}}>
+        <button className={`w-max p-4 rounded-md bg-neutral-300 text-black text-base ${niche === 'architecture'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('architecture')}}>
           Architecture Designers
         </button>
       </div>
