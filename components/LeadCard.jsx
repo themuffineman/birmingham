@@ -80,7 +80,7 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
     async function getTemplate(){
         try {
             setImageLoading(true)
-            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempName}?niche=${niche}`)
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempName}&niche=${niche}`)
             const resultJSON = await result.json()
             setLeadsData((prev)=>{
                 const newLeads = prev.map((lead, leadIndex)=>{

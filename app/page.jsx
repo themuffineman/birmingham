@@ -95,7 +95,7 @@ export default function Home(){
       for (const lead of leadsData) {
         let resultJSON;
         try {
-          const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}?niche=${niche}`);
+          const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}&niche=${niche}`);
           resultJSON = await result.json();
         } catch (error) {
           console.error(error);
