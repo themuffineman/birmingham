@@ -3,7 +3,7 @@ import React, {useRef, useState } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
-const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src}) => {
+const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src, niche}) => {
 
     const [loading, setLoading] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
@@ -80,7 +80,7 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
     async function getTemplate(){
         try {
             setImageLoading(true)
-            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempName}`)
+            const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${tempName}?niche=${niche}`)
             const resultJSON = await result.json()
             setLeadsData((prev)=>{
                 const newLeads = prev.map((lead, leadIndex)=>{
