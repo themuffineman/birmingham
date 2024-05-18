@@ -16,6 +16,7 @@ export default function Home(){
   const [service, setService] = useState('')
   const [isEmailAll,setIsEmailAll] = useState(false)
   const [isTemplateAll,setIsTemplateAll] = useState(false)
+  const [niche, setNiche] = useState('interior')
   let socket;
 
   async function fetchLeads(event){
@@ -94,7 +95,7 @@ export default function Home(){
       for (const lead of leadsData) {
         let resultJSON;
         try {
-          const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}`);
+          const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}?niche=${niche}`);
           resultJSON = await result.json();
         } catch (error) {
           console.error(error);
@@ -120,6 +121,14 @@ export default function Home(){
         height={200}
         priority={true}
         />
+      </div>
+      <div className="flex gap-5">
+        <button className={`w-max p-4 text-black text-base ${niche === 'interior'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('interior')}}>
+          Interior Designers
+        </button>
+        <button className={`w-max p-4 text-black text-base ${niche === 'architecture'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('architecture')}}>
+          Architecture Designers
+        </button>
       </div>
       <form onSubmit={(event)=> fetchLeads(event)} className="w-[74rem] p-4 flex justify-between items-center">
         <div className="w-max flex gap-4 items-center p-2">
