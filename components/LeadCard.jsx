@@ -1,9 +1,9 @@
 "use client"
-import React, {useRef, useState } from 'react'
+import React, {useRef, useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
-const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src, niche}) => {
+const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src, niche, project="No project"}) => {
 
     const [loading, setLoading] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
@@ -77,6 +77,30 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
 
         });
     }
+    function editName(newName){
+        setLeadsData((prev)=>{
+            const newLead = prev.map((lead, leadIndex)=>{
+                if(index === leadIndex){
+                    return {...lead, name: newName}
+                }else{
+                    return lead
+                }
+            })
+            return newLead;
+        })
+    }
+    function editProject(newProject){
+        setLeadsData((prev)=>{
+            const newLead = prev.map((lead, leadIndex)=>{
+                if(index === leadIndex){
+                    return {...lead, project: newProject}
+                }else{
+                    return lead
+                }
+            })
+            return newLead;
+        })
+    }
     async function getTemplate(){
         try {
             setImageLoading(true)
@@ -111,9 +135,34 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
             return newLead;
         })
     }
+
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4'>
-        <div className='text-black font-bold text-lg truncate max-w-40 w-40'>{name}</div>
+    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4 '>
+        <Popover>
+            <PopoverTrigger className='relative'>
+                <div className='text-black relative p-1 rounded-sm font-bold text-lg truncate min-w-40 max-w-40 w-40 h-10 ring-2 ring-blue-200 text-center'>
+                   {name}
+                </div>
+                <p className='absolute font-semibold text-black text-xs -top-[0.65rem] right-[1/2] z-50 translate-x-[1/2] bg-white'>name</p>
+            </PopoverTrigger>
+            <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
+                <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
+                    <input value={name} onChange={(e)=> editName(e.target.value)} type="text" className='w-full p-2 bg-neutral-300' />
+                </div>
+            </PopoverContent>
+        </Popover>
+        <Popover>
+            <PopoverTrigger className='relative'>
+                <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
+                    Project
+                </div>
+            </PopoverTrigger>
+            <PopoverContent className="w-max h-max max-h-[25rem] flex flex-col gap-2 overflow-auto">
+                <div className='flex flex-col items-start gap-2 p-2 bg-white w-max'>
+                    <input value={project} onChange={(e)=> editProject(e.target.value)} type="text" className='w-full p-2 bg-neutral-300' />
+                </div>
+            </PopoverContent>
+        </Popover>
         <Popover>
             <PopoverTrigger>
                 <div className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
@@ -130,14 +179,14 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
         </Popover>
         <Dialog className="w-screen relative">
             <DialogTrigger className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
-                Preview Template
+                Template
                 <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm280-80q-82 0-146.5-44.5T240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280Zm0-60q56 0 102-26.5t72-73.5q-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340Zm0-100Zm0 60q25 0 42.5-17.5T540-440q0-25-17.5-42.5T480-500q-25 0-42.5 17.5T420-440q0 25 17.5 42.5T480-380Z"/></svg>
             </DialogTrigger>
-            <DialogContent className="w-[90vw] h-[700px] overflow-hidden">
+            <DialogContent className="w-[90vw] h-[90vh] overflow-hidden">
                 <img
                     alt='templateImage'
                     src={`data:image/jpeg;base64,${src}`}
-                    className='w-100% h-100% object-fit'
+                    className='size-full object-cover'
                 />
             </DialogContent>
         </Dialog>
@@ -187,6 +236,15 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
             <span>Open URL</span>
             <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z"/></svg>
         </a>
+        <Dialog className="w-screen relative">
+            <DialogTrigger className="flex gap-1 bg-neutral-300 rounded-md p-2 text-base font-semibold">
+                Website
+                <svg className='fill-black' xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-480H200v480Zm280-80q-82 0-146.5-44.5T240-440q29-71 93.5-115.5T480-600q82 0 146.5 44.5T720-440q-29 71-93.5 115.5T480-280Zm0-60q56 0 102-26.5t72-73.5q-26-47-72-73.5T480-540q-56 0-102 26.5T306-440q26 47 72 73.5T480-340Zm0-100Zm0 60q25 0 42.5-17.5T540-440q0-25-17.5-42.5T480-500q-25 0-42.5 17.5T420-440q0 25 17.5 42.5T480-380Z"/></svg>
+            </DialogTrigger>
+            <DialogContent className="w-[90vw] h-[90vh] overflow-hidden">
+                <iframe src={url} width="100%" height="100%"></iframe>
+            </DialogContent>
+        </Dialog>
         <div className='flex gap-3 items-center '>
             <button onClick={() => getTemplate()} className="p-2 w-max flex gap-3 items-center rounded-md hover:ring active:translate-y-1 transition-transform hover:ring-black text-white bg-yellow-500 hover:text-black hover:bg-yellow-300 text-base font-semibold">
                 <span>Generate Template </span>

@@ -7,7 +7,7 @@ import papajohns from '../public/papajohns.jpg'
 
 export default function Home(){
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([])
+  const [leadsData, setLeadsData] = useState([{name: 'peter', tempName:'petrus', emails: ['pete@pete.com'], project: 'water ville'}, {name: 'sheya', tempName:'petrus', emails: ['pete@pete.com']}])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
@@ -124,10 +124,10 @@ export default function Home(){
         />
       </div>
       <div className="flex gap-5">
-        <button className={`w-max p-4 rounded-md bg-neutral-300 text-black text-base ${niche === 'interior'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('interior')}}>
+        <button className={`w-max p-4 rounded-md bg-neutral-200 text-black text-base ${niche === 'interior'? 'bg-neutral-300 ring-4 ring-blue-400 ': ''}`} onClick={()=> {setNiche('interior')}}>
           Interior Designers
         </button>
-        <button className={`w-max p-4 rounded-md bg-neutral-300 text-black text-base ${niche === 'architecture'? 'bg-yellow-300 ring-2 ring-black ': 'bg-white'}`} onClick={()=> {setNiche('architecture')}}>
+        <button className={`w-max p-4 rounded-md bg-neutral-200 text-black text-base ${niche === 'architecture'? 'bg-neutral-300 ring-4 ring-blue-400 ': ''}`} onClick={()=> {setNiche('architecture')}}>
           Architects
         </button>
       </div>
@@ -146,7 +146,7 @@ export default function Home(){
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
-          <LeadCard key={index} niche={niche} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} setEmailsSent={setEmailsSent} tempName={lead.tempName} src={lead.src? lead.src : ''}/>
+          <LeadCard key={index} niche={niche} project={lead.project} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} setEmailsSent={setEmailsSent} tempName={lead.tempName} src={lead.src? lead.src : ''}/>
         ))}
       </div>
       <div className="flex gap-4 w-max mt-20 ">

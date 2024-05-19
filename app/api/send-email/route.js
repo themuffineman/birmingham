@@ -24,6 +24,9 @@ export async function POST(req){
         if(!emailData.src){
             throw new Error('Lead Has No src')
         }
+        if(!emailData.project){
+            throw new Error('Lead Has No Project')
+        }
         const dataEmailExists = await emailsCollection.findOne({email: emailData.emails[0]})
         if(dataEmailExists){
             throw new Error('Emails Already Exists')
@@ -37,7 +40,16 @@ export async function POST(req){
             },
             subject: 'Would you like help with your website?',
             text: `Greetings ${emailData.name}! I hope you're doing well! I'm Petrus, and I run a web design agency for A/E firms, and I'd love to work with your firm. That's why I went ahead and redesigned a section of your homepage (design is attached below) to demonstrate how your website could stand out among the best in your industry. If you're up for it I can build your firm a new website. If you're interested in this, simply let me know. Looking forward to potentially working together! Best regards Petrus PS: If you'd like to take a different design direction than the one I took, please feel free to let me know as well.`,
-            html: `<main style='display: flex; padding: 2rem; flex-direction: column; gap: 1rem; font-family: Arial, Helvetica, sans-serif;'><header><h1 style='font-size: 1rem; color: black; font-weight: bold; margin: .4rem;'>Greetings ${emailData.name}! </h1><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>I hope you're doing well! I'm Petrus, and I run a web design agency for A/E firms, and I'd love to work with your firm.</p><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>That's why I went ahead and redesigned a section of your homepage (design is attached below) to demonstrate how your website could stand out among the best in your industry.</p><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>If you're up for it I can build your firm a new website </p><p style='font-size: 1rem; color: black; font-weight: light; margin: .4rem;'>If you're interested in this, simply let me know or book a meeting with me using the link <a href="https://cal.com/pendora/30" target="_blank" style="color: blue; text-decoration: underline;">here</a>. Looking forward to potentially working together!</p></header><section style="display: flex; flex-direction: column; gap: 0;"><p style='font-weight: normal; margin: 0; padding-left: .4rem;'>Best regards</p><p style='font-size: .9rem; color: black; font-weight:400; margin: 0; padding-left: .4rem;'>PS: If you'd like to take a different design direction than the one I took, please feel free to let me know as well.</p>`,
+            html: `
+                <body>
+                    <p>Hello ${emailData.name},</p>
+                    <p>I recently visited your website and was very impressed by your portfolio, especially the ${emailData.project}. Your work is outstanding!</p>
+                    <p>However, I believe your website could be greatly enhanced to better convert visitors into leads and represent your firm in a way that better reflects the quality of your projects and firm.</p>
+                    <p>That’s why I would love to offer you a new website design at zero cost. You only pay if you're satisfied with the results. To give you a better idea of what I can offer, I’ve attached a design concept for your homepage that I created.</p>
+                    <p>Would you be available for a brief chat to discuss this further?</p>
+                    <p>Best regards,<br>Petrus</p>
+                </body>
+            `,
             attachments:[
                 {
                     content: emailData.src,
@@ -49,7 +61,7 @@ export async function POST(req){
             ]
         }
         const result = await sgMail.send(mailOptions)
-        await emailsCollection.insertOne({name: emailData.name, email: emailData.emails[0]})
+        await emailsCollection.insertOne({name: emailData.name, email: emailData.emails[0], url: emailData.url})
 
         return Response.json({success: result}, {status: 200})
 
