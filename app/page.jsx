@@ -94,11 +94,10 @@ export default function Home(){
     try {
       let newLeads = []
       for (const lead of leadsData) {
-        // let resultJSON;
         try {
           const result = await fetch('api/get-template', {method:"POST", body: JSON.stringify(lead)});
-          const resultJSON = await result.json();
-          newLeads.push({...lead, src: resultJSON.src ?? undefined});
+          const leadResult = await result.json();
+          newLeads.push(leadResult);
         } catch (error) {
           console.error(error);
         }
@@ -145,7 +144,7 @@ export default function Home(){
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index)=>(
-          <LeadCard key={index} niche={niche} project={lead.project} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} setEmailsSent={setEmailsSent} tempName={lead.tempName} src={lead.src? lead.src : ''}/>
+          <LeadCard key={index} tempError={lead.tempError} niche={niche} project={lead.project} name={lead.name} url={lead.url} emails={lead.emails} index={index} setLeadsData={setLeadsData} setEmailsSent={setEmailsSent} tempName={lead.tempName} src={lead.src? lead.src : ''}/>
         ))}
       </div>
       <div className="flex gap-4 w-max mt-20 ">

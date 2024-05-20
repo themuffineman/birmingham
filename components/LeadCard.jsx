@@ -3,7 +3,7 @@ import React, {useRef, useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'  
 
-const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src, niche, project="No project"}) => {
+const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSent, src, niche, project="No project", tempError}) => {
 
     const [loading, setLoading] = useState(false)
     const [imageLoading, setImageLoading] = useState(false)
@@ -137,7 +137,7 @@ const LeadCard = ({tempName, emails, name, url, index, setLeadsData, setEmailsSe
     }
 
   return (
-    <div className='grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4 '>
+    <div className={`${tempError && 'bg-red-500 animate-pulse'} grid grid-row-1 grid-flow-col justify-between items-center justify-items-center ring ring-slate-500 w-[80rem] rounded-md p-4`}>
         <Popover>
             <PopoverTrigger className='relative'>
                 <div className='text-black relative p-1 rounded-sm font-bold text-lg truncate min-w-40 max-w-40 w-40 h-10 ring-2 ring-blue-200 text-center'>
