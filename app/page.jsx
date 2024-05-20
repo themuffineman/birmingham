@@ -7,7 +7,7 @@ import papajohns from '../public/papajohns.jpg'
 
 export default function Home(){
   const pagesRef= useRef(null)
-  const [leadsData, setLeadsData] = useState([{name: 'Peter', emails: ['petrusheya+35@gmail.com'], tempName: 'pete', tempError: true, niche: "interior"}])
+  const [leadsData, setLeadsData] = useState([])
   const [statusUpdate, setStatusUpdate] = useState('Running')
   const [isStatus, setIsStatus] = useState(false)
   const [pagesToScrape, setPagesToScrape] = useState(0)
@@ -79,6 +79,7 @@ export default function Home(){
         if (!result.ok){
           throw new Error('Failed to send emails. Server returned ' + result.status + ' ' + result.statusText);
         }
+        setEmailsSent(prev=> prev+1)
       }catch(error){
         errorLeads.push(lead)
         console.error('Lead: ', lead.name,'|',error)
