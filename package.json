@@ -18,6 +18,7 @@
     "clsx": "^2.1.0",
     "googleapis": "^134.0.0",
     "lucide-react": "^0.363.0",
+    "mailersend": "^2.2.0",
     "mongodb": "^6.5.0",
     "mongoose": "^8.2.3",
     "next": "14.1.4",
