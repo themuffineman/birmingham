@@ -96,9 +96,13 @@ export default function Home(){
       let newLeads = []
       for (const lead of leadsData){
         try {
-          const result = await fetch('api/get-template', {method:"POST", body: JSON.stringify(lead)});
-          const leadResult = await result.json();
-          newLeads.push(leadResult);
+          const result = await fetch(`https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}&niche=${niche}`);
+          if(!result.ok){
+            newLeads.push({...lead, src: undefined, tempError: true})
+          }else{
+            const leadResult = await result.json();
+            newLeads.push({...lead, src: leadResult.src, tempError: false})
+          }
         } catch (error) {
           console.error(error);
           newLeads.push(lead);
