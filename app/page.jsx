@@ -1,77 +1,70 @@
 "use client";
 import LeadCard from "@/components/LeadCard";
 import { useRef, useState } from "react";
-import styles from "../components/components.module.css";
-import Image from "next/image";
-import papajohns from "../public/papajohns.jpg";
 import LogInfo from "@/components/LogInfo";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 const industries = ["Interior Designers", "Architects"];
+//table for leads and env var for backednd url
 export default function Home() {
   const pagesRef = useRef(null);
 
   const [leadsData, setLeadsData] = useState([]);
-  const [statusUpdate, setStatusUpdate] = useState("Running");
-  const [isStatus, setIsStatus] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
   const [pagesToScrape, setPagesToScrape] = useState(935);
   const [emailsSent, setEmailsSent] = useState(335);
   const [location, setLocation] = useState("");
-  const [service, setService] = useState("");
   const [isEmailAll, setIsEmailAll] = useState(false);
   const [isTemplateAll, setIsTemplateAll] = useState(false);
-  const [niche, setNiche] = useState("interior");
+  const [service, setService] = useState("interior");
   let socket;
 
   async function fetchLeads(event) {
     try {
       event.preventDefault();
       setIsStatus(true);
-      socket = new WebSocket("wss://papa-johns.onrender.com/scrape");
+      socket = new WebSocket(
+        `wss://papa-johns.onrender.com/scrape?location=${location}&service=${service}`
+      );
 
       socket.addEventListener("open", () => {
-        setStatusUpdate("WebSocket connection established");
+        toast.info("Connection established");
       });
 
       socket.addEventListener("error", (error) => {
         console.error("WebSocket error:", error);
-        setStatusUpdate(`Failed to connect to WebSocket`);
-        setTimeout(() => {
-          setIsStatus(false);
-        }, 3000);
+        toast.info(`Failed to establish connection: ${error.message}`);
         socket.close();
       });
 
       socket.addEventListener("close", () => {
-        setStatusUpdate("Websocket Closed");
-        setIsStatus(false);
+        toast.info("Connection Closed");
+        setIsLoading(false);
       });
 
       socket.addEventListener("message", (event) => {
         const message = event.data;
-        try {
-          const data = JSON.parse(message);
-          if (data.pages) {
-            // if we recieved a pages object then thats the number of pages to scrape, if not, then its a lead
-            setPagesToScrape(data.pages);
-          } else {
-            setLeadsData((prev) => {
-              const copyPrev = prev ? JSON.parse(JSON.stringify(prev)) : [];
-              copyPrev.push(data);
-              return copyPrev;
-            });
-            console.log("Received scraped data:", data);
-          }
-        } catch (error) {
-          setStatusUpdate(message); // if its not a json string then its a status update
-          console.log("Received status update:", message);
+        const data = JSON.parse(message);
+        if (data.type === "count") {
+          setPagesToScrape(data.message);
+        } else if (data.type === "lead") {
+          setLeadsData((prev) => [...prev, data.message]);
+          toast.success(`Lead Added`, {
+            description: `${data.message}`,
+          });
+        } else if (data.type === "status") {
+          toast.info(data.message);
+        } else if (data.type === "error") {
+          toast.error(data.message);
         }
       });
-
-      await fetch(
-        `https://papa-johns.onrender.com/scrape?service=${service}&location=${location}&pageNumber=${pagesRef.current.value}`
-      ); //papa-johns.com
     } catch (error) {
       console.error(error);
+      toast.error(`An error occurred while fetching leads`, {
+        description: error.message,
+      });
     }
   }
   async function sendAllEmails() {
@@ -102,13 +95,12 @@ export default function Home() {
   }
   async function generateAllTemplates() {
     setIsTemplateAll(true);
-    console.log(niche);
     try {
       let newLeads = [];
       for (const lead of leadsData) {
         try {
           const result = await fetch(
-            `https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}&niche=${niche}`
+            `https://html-to-image-nava.onrender.com/screenshot/?name=${lead.tempName}&service=${service}`
           );
           if (!result.ok) {
             newLeads.push({ ...lead, src: undefined, tempError: true });
@@ -138,19 +130,19 @@ export default function Home() {
         </h1>
       </div>
       <div className="flex gap-5">
-        {industries.map((industry, index) => (
+        {industries.map((item, index) => (
           <button
             key={index}
             className={`w-max p-4 rounded-none font-mono font-bold   text-sm ${
-              niche === industry.toLowerCase()
+              service === item.toLowerCase()
                 ? "bg-black text-white ring-2 ring-red-500 "
                 : "bg-neutral-200 text-black"
             }`}
             onClick={() => {
-              setNiche(industry.toLowerCase());
+              setService(item.toLowerCase());
             }}
           >
-            {industry}
+            {item}
           </button>
         ))}
       </div>
@@ -178,18 +170,20 @@ export default function Home() {
               min={1}
               required={true}
               className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-none focus-visible:border-red-500"
-              placeholder="Page#"
+              placeholder="Page Number"
             />
           </div>
         </div>
-        <Button className="w-full rounded-none bg-yellow-500">Run</Button>
+        <Button className="w-full rounded-none transition-transform active:translate-y-1 bg-yellow-500">
+          Run {isLoading && <Loader2 className="stroke-black animate-spin " />}
+        </Button>
       </form>
       <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index) => (
           <LeadCard
             key={index}
             tempError={lead.tempError}
-            niche={niche}
+            niche={service}
             project={lead.project}
             name={lead.name}
             url={lead.url}
@@ -228,14 +222,6 @@ export default function Home() {
         </div>
       )}
 
-      {isStatus && (
-        <div
-          className={`w-max flex justify-between items-center p-3 fixed bottom-4 ${styles.status} left-1/2 -translate-x-1/2 bg-black rounded-md`}
-        >
-          <div className="size-5 rounded-full border-2 border-black border-t-white border-b-white animate-spin" />
-          <p className="p-2 text-white text-base font-normal">{statusUpdate}</p>
-        </div>
-      )}
       <LogInfo data={[pagesToScrape, leadsData.length, emailsSent]} />
     </main>
   );

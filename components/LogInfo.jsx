@@ -7,7 +7,7 @@ const LogInfo = ({ data }) => {
     <div
       className={` fixed ${
         isOpen ? "" : "translate-y-[7.4rem]"
-      } left-2 z-50 w-52 h-40 bottom-0 flex flex-col items-center  bg-black shadow-lg `}
+      } left-2 z-50 w-52 h-40 bottom-0 flex flex-col transition-transform items-center  bg-black shadow-lg `}
     >
       <div
         onClick={() => setIsOpen(!isOpen)}
