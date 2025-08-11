@@ -13,8 +13,8 @@ export default function Home() {
   const [leadsData, setLeadsData] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [pagesToScrape, setPagesToScrape] = useState(935);
-  const [emailsSent, setEmailsSent] = useState(335);
+  const [pagesToScrape, setPagesToScrape] = useState(0);
+  const [emailsSent, setEmailsSent] = useState(0);
   const [location, setLocation] = useState("");
   const [isEmailAll, setIsEmailAll] = useState(false);
   const [isTemplateAll, setIsTemplateAll] = useState(false);
@@ -60,7 +60,7 @@ export default function Home() {
         } else if (data.type === "lead") {
           setLeadsData((prev) => [...prev, data.message]);
           toast.success(`Lead Added`, {
-            description: `${data.message}`,
+            description: `${message.slice(0, 50)}...`,
           });
         } else if (data.type === "status") {
           toast.info(data.message);
@@ -166,11 +166,11 @@ export default function Home() {
               onChange={(e) => setLocation(e.target.value)}
               type="text"
               required={true}
-              className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-none focus-visible:border-red-500"
+              className="p-2 text-black min-w-80 bg-neutral-300 focus:ring-1 focus:ring-black rounded-none focus-visible:border-red-500"
               placeholder="Enter Location"
             />
           </div>
-          <div className="flex items-start gap-2 flex-col">
+          <div className="hidden items-start gap-2 flex-col">
             <p className="text-sm font-bold">Enter Page Number</p>
 
             <input
@@ -183,11 +183,17 @@ export default function Home() {
             />
           </div>
         </div>
-        <Button className="w-full rounded-none transition-transform active:translate-y-1 bg-yellow-500">
-          Run {isLoading && <Loader2 className="stroke-black animate-spin " />}
+        <Button
+          type="submit"
+          className="w-full font-bold text-lg rounded-none transition-transform active:translate-y-1 bg-yellow-500"
+        >
+          Scrape Leads{" "}
+          {isLoading && (
+            <Loader2 className="stroke-white stroke-2 animate-spin " />
+          )}
         </Button>
       </form>
-      <div className="grid grid-cols-1 grid-flow-row gap-4 w-full justify-items-center">
+      <div className="grid grid-cols-1 grid-flow-row max-w-[70rem] overflow-auto gap-4 w-full justify-items-center">
         {leadsData?.map((lead, index) => (
           <LeadCard
             key={index}
@@ -231,7 +237,12 @@ export default function Home() {
         </div>
       )}
 
-      <LogInfo data={[pagesToScrape, leadsData.length, emailsSent]} />
+      <LogInfo
+        data={[
+          `Leads found: ${leadsData.length}`,
+          `Emails Sent: ${emailsSent}`,
+        ]}
+      />
     </main>
   );
 }

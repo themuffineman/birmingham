@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
           )}
         />
         {children}
-        <Toaster richColors />
+        <Toaster richColors expand={true} />
       </body>
     </html>
   );
