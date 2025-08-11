@@ -18,24 +18,32 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [isEmailAll, setIsEmailAll] = useState(false);
   const [isTemplateAll, setIsTemplateAll] = useState(false);
-  const [service, setService] = useState("interior");
+  const [service, setService] = useState(industries[0].toLowerCase());
   let socket;
 
   async function fetchLeads(event) {
     try {
       event.preventDefault();
-      setIsStatus(true);
+      setIsLoading(true);
+      toast.info("Fetching Leads...");
+      if (socket?.readyState === WebSocket.OPEN) {
+        toast.info("Connection already established");
+        setIsLoading(true);
+        return;
+      }
       socket = new WebSocket(
-        `wss://papa-johns.onrender.com/scrape?location=${location}&service=${service}`
+        `${process.env.NEXT_PUBLIC_SOCKET_URL}?location=${location}&service=${service}`
       );
 
       socket.addEventListener("open", () => {
+        console.log("WebSocket connection established");
         toast.info("Connection established");
       });
 
       socket.addEventListener("error", (error) => {
         console.error("WebSocket error:", error);
         toast.info(`Failed to establish connection: ${error.message}`);
+        setIsLoading(false);
         socket.close();
       });
 
@@ -64,6 +72,7 @@ export default function Home() {
       console.error(error);
       toast.error(`An error occurred while fetching leads`, {
         description: error.message,
+        descriptionClassName: "text-sm text-neutral-500",
       });
     }
   }
