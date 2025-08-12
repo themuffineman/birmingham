@@ -109,7 +109,7 @@ const LeadCard = ({
     try {
       setImageLoading(true);
       const result = await fetch(
-        `https://html-to-image-production-4cb8.up.railway.app/screenshot/?name=${tempName}&niche=${niche}`
+        `https://html-to-image-production-4cb8.up.railway.app/screenshot?name=${tempName}&niche=${niche}`
       );
       const resultJSON = await result.json();
       setLeadsData((prev) => {
