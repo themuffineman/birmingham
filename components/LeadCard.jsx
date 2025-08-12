@@ -2,8 +2,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Globe, Mail, MailCheck, Webhook } from "lucide-react";
+import { Globe, Loader2, Mail, MailCheck, Webhook } from "lucide-react";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 const LeadCard = ({
   tempName,
@@ -20,6 +21,9 @@ const LeadCard = ({
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const newEmail = useRef(null);
+  if (!emails || emails.length === 0) {
+    return null;
+  }
 
   async function sendEmail(name, email) {
     try {
@@ -105,7 +109,7 @@ const LeadCard = ({
     try {
       setImageLoading(true);
       const result = await fetch(
-        `https://html-to-image-nava.onrender.com/screenshot/?name=${tempName}&niche=${niche}`
+        `https://html-to-image-production-4cb8.up.railway.app/screenshot/?name=${tempName}&niche=${niche}`
       );
       const resultJSON = await result.json();
       setLeadsData((prev) => {
@@ -120,7 +124,7 @@ const LeadCard = ({
       });
     } catch (error) {
       console.error(error);
-      alert("Failed to generate image");
+      toast.error("Failed to generate image");
     } finally {
       setImageLoading(false);
     }
@@ -269,9 +273,7 @@ const LeadCard = ({
           className="p-2 w-max flex gap-3 items-center rounded-none active:translate-y-1 transition-transform  text-white bg-yellow-500 border border-black hover:text-black hover:bg-yellow-300 text-base font-semibold"
         >
           <span>Generate Template </span>
-          {imageLoading && (
-            <span className="size-4 rounded-full border-2 border-t-neutral-400 animate-spin" />
-          )}
+          {imageLoading && <Loader2 className="animate-spin" />}
         </Button>
 
         <div>

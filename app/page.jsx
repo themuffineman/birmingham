@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react";
 const industries = ["Interior Designers", "Architects"];
 //table for leads and env var for backednd url
 export default function Home() {
-  const pagesRef = useRef(null);
+  // const pagesRef = useRef(null);
 
   const [leadsData, setLeadsData] = useState([]);
 
@@ -170,23 +170,8 @@ export default function Home() {
               placeholder="Enter Location"
             />
           </div>
-          <div className="hidden items-start gap-2 flex-col">
-            <p className="text-sm font-bold">Enter Page Number</p>
-
-            <input
-              ref={pagesRef}
-              type="number"
-              min={1}
-              required={true}
-              className="p-2 text-black bg-neutral-300 focus:ring-1 focus:ring-black w-60 rounded-none focus-visible:border-red-500"
-              placeholder="Page Number"
-            />
-          </div>
         </div>
-        <Button
-          type="submit"
-          className="w-full font-bold text-lg rounded-none transition-transform active:translate-y-1 bg-yellow-500"
-        >
+        <Button className="w-full font-bold text-lg rounded-none transition-transform active:translate-y-1 bg-yellow-500">
           Scrape Leads{" "}
           {isLoading && (
             <Loader2 className="stroke-white stroke-2 animate-spin " />
