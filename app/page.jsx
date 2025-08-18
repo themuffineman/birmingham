@@ -77,6 +77,10 @@ export default function Home() {
     }
   }
   async function sendAllEmails() {
+    alert(
+      "This feature is not available yet. Please clone the repo and run it privately to use this feature."
+    );
+    return;
     setIsEmailAll(true);
     const errorLeads = [];
     for (const lead of leadsData) {
@@ -212,7 +216,7 @@ export default function Home() {
           <Button
             onClick={() => generateAllTemplates()}
             variant="secondary"
-            className="border-2 rounded-none border-black hover:bg-black hover:text-white"
+            className="border-2 hidden rounded-none border-black hover:bg-black hover:text-white"
           >
             Generate All Templates
             {isTemplateAll && (
