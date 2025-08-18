@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Globe, Loader2, Mail, MailCheck, Webhook } from "lucide-react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import Image from "next/image";
 
 const LeadCard = ({
   tempName,
