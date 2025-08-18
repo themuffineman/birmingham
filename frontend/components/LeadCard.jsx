@@ -192,11 +192,11 @@ const LeadCard = ({
           Template
           <Globe />
         </DialogTrigger>
-        <DialogContent className="w-[90vw] rounded-none h-[90vh] overflow-hidden">
-          <img
+        <DialogContent className="rounded-none  h-max overflow-auto">
+          <Image
             alt="templateImage"
             src={`data:image/jpeg;base64,${src}`}
-            className="size-full object-cover"
+            className="h-[90%] w-auto aspect-auto object-cover"
           />
         </DialogContent>
       </Dialog>

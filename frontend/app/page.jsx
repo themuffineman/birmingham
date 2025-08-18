@@ -76,6 +76,8 @@ export default function Home() {
       });
     }
   }
+  //This function sends all emails to the leads in the leadsData array. It's disbaled for now
+  //Please your own email sending platform to send emails.
   async function sendAllEmails() {
     alert(
       "This feature is not available yet. Please clone the repo and run it privately to use this feature."
