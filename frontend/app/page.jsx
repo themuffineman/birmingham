@@ -1,6 +1,6 @@
 "use client";
 import LeadCard from "@/components/LeadCard";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import LogInfo from "@/components/LogInfo";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -8,12 +8,9 @@ import { Loader2 } from "lucide-react";
 const industries = ["Interior Designers", "Architects"];
 //table for leads and env var for backednd url
 export default function Home() {
-  // const pagesRef = useRef(null);
-
   const [leadsData, setLeadsData] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [pagesToScrape, setPagesToScrape] = useState(0);
   const [emailsSent, setEmailsSent] = useState(0);
   const [location, setLocation] = useState("");
   const [isEmailAll, setIsEmailAll] = useState(false);
@@ -56,7 +53,7 @@ export default function Home() {
         const message = event.data;
         const data = JSON.parse(message);
         if (data.type === "count") {
-          setPagesToScrape(data.message);
+          return;
         } else if (data.type === "lead") {
           setLeadsData((prev) => [...prev, data.message]);
           toast.success(`Lead Added`, {
