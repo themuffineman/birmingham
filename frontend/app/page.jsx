@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 const industries = ["Interior Designers", "Architects"];
-//table for leads and env var for backednd url
+
 export default function Home() {
   const [leadsData, setLeadsData] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
   const [emailsSent, setEmailsSent] = useState(0);
   const [location, setLocation] = useState("");

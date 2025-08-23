@@ -402,7 +402,6 @@ wss.on("close", () => {
   console.log("WebSocket connections closed.");
 });
 
-// HTTP route handlers
 app.post("/scrape", async (req, res) => {
   const { service, location, pageNumber, clientId } = req.body;
   try {
